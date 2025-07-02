@@ -5,6 +5,7 @@ import { Geist } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "~/components/theme-provider";
+import ThemedConstellation from "~/components/ThemedConstellation";
 
 export const metadata: Metadata = {
   title: "Learnstellation - AI-Powered Learning Platform",
@@ -24,7 +25,10 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
       <body className="bg-background text-foreground" suppressHydrationWarning>
         <ThemeProvider defaultTheme="system" storageKey="learnstellation-ui-theme">
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <ThemedConstellation />
+          <div className="relative z-10">
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </div>
         </ThemeProvider>
       </body>
     </html>
