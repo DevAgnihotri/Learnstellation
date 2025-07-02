@@ -616,8 +616,8 @@ export const roadmapRouter = createTRPCRouter({
               description: project.description,
               difficulty: project.difficulty,
               estimatedTime: project.estimatedTime,
-              technologies: project.technologies,
-              deliverables: project.deliverables,
+              technologies: JSON.stringify(project.technologies),
+              deliverables: JSON.stringify(project.deliverables),
               roadmapId: input.roadmapId,
               relatedTopics: {
                 create: project.relatedTopicIds.map(topicId => ({
@@ -723,8 +723,8 @@ export const roadmapRouter = createTRPCRouter({
           description: project.description,
           difficulty: project.difficulty,
           estimatedTime: project.estimatedTime,
-          technologies: project.technologies,
-          deliverables: project.deliverables,
+          technologies: JSON.parse(project.technologies),
+          deliverables: JSON.parse(project.deliverables),
           createdAt: project.createdAt,
           updatedAt: project.updatedAt,
           relatedTopics: project.relatedTopics.map(rt => ({

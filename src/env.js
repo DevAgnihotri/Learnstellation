@@ -12,7 +12,7 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
     GOOGLE_GENERATIVE_AI_API_KEY: z.string().min(1),
-    YOUTUBE_SEARCH_API_KEY: z.string().min(1).optional(),
+    YOUTUBE_SEARCH_API_KEY: z.string().min(1),
   },
 
   /**

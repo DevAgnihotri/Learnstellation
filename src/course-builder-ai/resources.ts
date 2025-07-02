@@ -70,17 +70,26 @@ const searchYouTubeVideos = async (topic: string, maxResults = 20): Promise<YouT
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${searchQuery}&maxResults=${maxResults}&key=${apiKey}&order=relevance&videoDuration=medium&videoDefinition=high`;
 
   try {
+    console.log(`🔍 YouTube API URL: ${url.replace(apiKey, 'HIDDEN_KEY')}`);
+    
     const response = await fetch(url);
     
     if (!response.ok) {
-      throw new Error(`YouTube API error: ${response.status} ${response.statusText}`);
+      const errorText = await response.text();
+      console.error(`YouTube API Error Response: ${response.status} ${response.statusText}`);
+      console.error(`Error details: ${errorText}`);
+      throw new Error(`YouTube API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json() as YouTubeSearchResponse;
+    console.log(`✅ YouTube API returned ${data.items?.length || 0} videos`);
     return data.items || [];
   } catch (error) {
     console.error("Error searching YouTube videos:", error);
-    throw new Error("Failed to search YouTube videos");
+    if (error instanceof Error) {
+      throw new Error(`Failed to search YouTube videos: ${error.message}`);
+    }
+    throw new Error("Failed to search YouTube videos: Unknown error");
   }
 };
 
