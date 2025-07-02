@@ -197,6 +197,32 @@ npm start                   # Start production server
 
 ## 🐛 Troubleshooting
 
+### 🔌 Stop All Services:
+
+If you need to stop all running servers and free up ports:
+
+```bash
+# Kill all Node.js processes (frontend)
+taskkill /F /IM node.exe
+
+# Kill all Python processes (backend)
+taskkill /F /IM python.exe
+
+# Verify ports are free
+netstat -ano | findstr ":3001\|:8001"
+```
+
+**Alternative method for specific processes:**
+
+```bash
+# Check what's running on ports
+netstat -ano | findstr ":3001"     # Frontend port
+netstat -ano | findstr ":8001"     # Backend port
+
+# Kill specific process by PID (replace XXXX with actual PID)
+taskkill /F /PID XXXX
+```
+
 ### Common Issues:
 
 1. **Port already in use**: The app will automatically use the next available port (3001, 3002, etc.)
@@ -312,5 +338,3 @@ npm run dev              # Frontend
 - `start-all.bat` - One-command startup
 - `SUPABASE_SETUP.md` - Supabase setup guide
 - `YOUTUBE_API_SETUP.md` - YouTube API setup guide
-
-To close all ports:- "taskkill /F /IM node.exe"
