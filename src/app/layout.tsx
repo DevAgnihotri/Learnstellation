@@ -22,7 +22,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
+      <body className="bg-background text-foreground" suppressHydrationWarning>
         <ThemeProvider defaultTheme="system" storageKey="vibe-learning-ui-theme">
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </ThemeProvider>
