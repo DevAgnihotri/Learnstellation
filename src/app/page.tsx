@@ -22,7 +22,7 @@ export default async function Home() {
         <nav className="container mx-auto flex items-center justify-between px-6 py-8">
           <div className="flex items-center space-x-2">
             <div className="h-8 w-8 rounded-lg bg-foreground"></div>
-            <span className="text-2xl font-bold text-foreground">Vibe Learning</span>
+            <span className="text-2xl font-bold text-foreground">Learnstellation</span>
           </div>
           <div className="hidden md:flex items-center space-x-8">
             {!user ? (
@@ -112,7 +112,7 @@ export default async function Home() {
               <div>
                 <div className="flex items-center space-x-2 mb-4">
                   <div className="h-8 w-8 rounded-lg bg-foreground"></div>
-                  <span className="text-xl font-bold text-foreground">Vibe Learning</span>
+                  <span className="text-xl font-bold text-foreground">Learnstellation</span>
                 </div>
                 <p className="text-muted-foreground">
                   Empowering learners worldwide with AI-driven education.
@@ -141,7 +141,7 @@ export default async function Home() {
               </div>
             </div>
             <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
-              <p>&copy; 2025 Vibe Learning. All rights reserved.</p>
+              <p>&copy; 2025 Learnstellation. All rights reserved. Created by Dev Agnihotri.</p>
             </div>
           </div>
         </footer>

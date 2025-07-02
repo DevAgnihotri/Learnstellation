@@ -2,7 +2,7 @@
 
 # Script to start the FastAPI backend server
 
-echo "Starting Vibe Learning FastAPI Backend..."
+echo "Starting Learnstellation FastAPI Backend..."
 
 # Navigate to the backend directory
 cd "$(dirname "$0")"

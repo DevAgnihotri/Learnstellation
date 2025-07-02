@@ -2,7 +2,7 @@
 
 ## Overview
 
-Your Vibe Learning app can search YouTube for educational videos to enhance learning roadmaps. This requires the YouTube Data API v3.
+Your Learnstellation app can search YouTube for educational videos to enhance learning roadmaps. This requires the YouTube Data API v3.
 
 ## 🚀 Quick Setup Steps
 
@@ -16,7 +16,7 @@ Your Vibe Learning app can search YouTube for educational videos to enhance lear
 **Option A: Create New Project**
 
 1. Click "Create Project"
-2. Enter project name: `vibe-learning-youtube` (or any name)
+2. Enter project name: `learnstellation-youtube` (or any name)
 3. Click "Create"
 
 **Option B: Use Existing Project**
@@ -46,12 +46,14 @@ Your Vibe Learning app can search YouTube for educational videos to enhance lear
    - Select "Restrict key"
    - Check "YouTube Data API v3"
 3. Under "Application restrictions":
+
 - For web apps, choose **"HTTP referrers"**
-    - Add: `http://localhost:3001/*` (for local development)
-    - Add your production domain, e.g., `https://yourdomain.com/*`
-    - Avoid using wildcards like `*` alone, as Google may reject them
+  - Add: `http://localhost:3001/*` (for local development)
+  - Add your production domain, e.g., `https://yourdomain.com/*`
+  - Avoid using wildcards like `*` alone, as Google may reject them
 - For server apps, choose **"IP addresses"** and add your server's IP
 - For mobile apps, choose **"Android apps"** or **"iOS apps"** as appropriate
+
 4. Click "Save"
 
 ### Step 6: Add to Environment Variables

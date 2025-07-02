@@ -7,7 +7,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "~/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Vibe Learning - AI-Powered Learning Platform",
+  title: "Learnstellation - AI-Powered Learning Platform",
   description: "Transform your learning experience with AI-powered personalized education. Learn at your own pace with intelligent tutoring and adaptive content.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
       <body className="bg-background text-foreground" suppressHydrationWarning>
-        <ThemeProvider defaultTheme="system" storageKey="vibe-learning-ui-theme">
+        <ThemeProvider defaultTheme="system" storageKey="learnstellation-ui-theme">
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </ThemeProvider>
       </body>

@@ -1,4 +1,6 @@
-# Vibe Learning Backend
+# Learnstellation Backend
+
+**Author:** Dev Agnihotri
 
 ## Setup Instructions
 
@@ -18,11 +20,13 @@ pip install -r requirements.txt
 You can start the server in two ways:
 
 #### Option A: Using the provided script
+
 ```bash
 ./start-server.sh
 ```
 
 #### Option B: Manual start
+
 ```bash
 python app.py
 ```
@@ -32,30 +36,36 @@ The server will start on `http://localhost:8000`
 ### 3. API Documentation
 
 Once the server is running, you can view the interactive API documentation at:
+
 - Swagger UI: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
 
 ## Supported Content Types
 
 ### 1. PDF Files
+
 - Upload PDF files directly (up to 50MB)
 - Files are stored but not processed
 
 ### 2. PDF Links
+
 - Receive PDFs from direct URLs
 - URLs are validated but not downloaded
 
 ### 3. YouTube Videos
+
 - Receive YouTube video URLs
 - URLs are validated but transcripts are not extracted
 
 ### 4. Websites
+
 - Receive website URLs
 - URLs are validated but content is not scraped
 
 ## API Endpoints
 
 ### Upload PDF File
+
 ```
 POST /upload-pdf
 Content-Type: multipart/form-data
@@ -63,6 +73,7 @@ Body: file (PDF file)
 ```
 
 ### Receive Content from URL
+
 ```
 POST /upload-content
 Content-Type: application/x-www-form-urlencoded
@@ -72,11 +83,13 @@ Body:
 ```
 
 ### Get Content Info
+
 ```
 GET /content/{content_id}
 ```
 
 ### Delete Content
+
 ```
 DELETE /content/{content_id}
 ```

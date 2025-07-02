@@ -19,12 +19,12 @@ from youtube_transcript import extract_youtube_transcript
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Vibe Learning Content API", version="1.0.0")
+app = FastAPI(title="Learnstellation Content API", version="1.0.0")
 
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000",  "https://vibe-learning-theta.vercel.app"],  # Next.js dev server
+    allow_origins=["http://localhost:3000", "http://localhost:3001", "https://learnstellation.vercel.app"],  # Next.js dev server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -47,7 +47,7 @@ app.mount("/images", StaticFiles(directory=IMAGES_DIR), name="images")
 
 @app.get("/")
 async def root():
-    return {"message": "Vibe Learning Content API is running!"}
+    return {"message": "Learnstellation Content API is running!", "author": "Dev Agnihotri"}
 
 @app.post("/upload-content")
 async def upload_content(

@@ -1,6 +1,6 @@
 @echo off
 echo ==========================================
-echo    VIBE LEARNING - QUICK START SCRIPT
+echo    LEARNSTELLATION - QUICK START SCRIPT
 echo ==========================================
 echo.
 
@@ -10,18 +10,18 @@ if %errorlevel%==0 (
     echo ✓ Backend is already running on port 8001
 ) else (
     echo [2/3] Starting Python backend...
-    start "Vibe Learning Backend" cmd /c "cd src\python-backend && ..\..\..\.venv\Scripts\uvicorn.exe app:app --reload --host 0.0.0.0 --port 8001"
+    start "Learnstellation Backend" cmd /c "cd src\python-backend && ..\..\..\.venv\Scripts\uvicorn.exe app:app --reload --host 0.0.0.0 --port 8001"
     timeout /t 3 >nul
     echo ✓ Backend started on http://localhost:8001
 )
 
 echo.
 echo [3/3] Starting Next.js frontend...
-start "Vibe Learning Frontend" cmd /c "npm run dev"
+start "Learnstellation Frontend" cmd /c "npm run dev"
 
 echo.
 echo ==========================================
-echo    🚀 VIBE LEARNING IS STARTING UP!
+echo    🚀 LEARNSTELLATION IS STARTING UP!
 echo ==========================================
 echo.
 echo ✓ Frontend: http://localhost:3001

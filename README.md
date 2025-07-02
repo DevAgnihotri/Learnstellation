@@ -1,4 +1,7 @@
-# Vibe Learning - AI-Powered Learning Platform 🚀
+# Learnstellation - AI-Powered Learning Platform 🚀
+
+> **Created by:** Dev Agnihotri  
+> **An intelligent learning platform that creates personalized roadmaps, curates educational content, and tracks your learning progress.**
 
 This is a modern learning platform built with the [T3 Stack](https://create.t3.gg/) featuring AI-powered content generation, PDF processing, and interactive learning experiences.
 
@@ -36,7 +39,7 @@ This is a modern learning platform built with the [T3 Stack](https://create.t3.g
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd vibe-learning-main
+cd learnstellation
 
 # Install Node.js dependencies
 npm install
@@ -157,7 +160,7 @@ Once both servers are running:
 ## 📁 Project Structure
 
 ```
-vibe-learning-main/
+learnstellation/
 ├── src/
 │   ├── app/                 # Next.js pages and layouts
 │   ├── components/          # Reusable UI components
@@ -309,3 +312,5 @@ npm run dev              # Frontend
 - `start-all.bat` - One-command startup
 - `SUPABASE_SETUP.md` - Supabase setup guide
 - `YOUTUBE_API_SETUP.md` - YouTube API setup guide
+
+To close all ports:- "taskkill /F /IM node.exe"

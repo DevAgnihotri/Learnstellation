@@ -1,4 +1,4 @@
-# 🔐 Supabase Setup Guide for Learnstellation 
+# 🔐 Supabase Setup Guide for Learnstellation
 
 ## Step 1: Create Supabase Account
 
@@ -11,7 +11,7 @@
 Fill in the project details:
 
 - **Organization**: Select your organization (or create one)
-- **Project Name**: `vibe-learning` (or any name you prefer)
+- **Project Name**: `learnstellation` (or any name you prefer)
 - **Database Password**: Create a strong password (save this!)
 - **Region**: Choose the region closest to you
 - **Pricing Plan**: Select "Free" for development
@@ -112,4 +112,4 @@ SKIP_ENV_VALIDATION=true
 
 ---
 
-**Once you complete these steps, your Vibe Learning app will be fully functional! 🚀**
+**Once you complete these steps, your Learnstellation app will be fully functional! 🚀**

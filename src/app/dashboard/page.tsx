@@ -23,7 +23,7 @@ export default async function Dashboard() {
       <nav className="container mx-auto flex items-center justify-between px-6 py-8">
         <div className="flex items-center space-x-2">
           <div className="h-8 w-8 rounded-lg bg-foreground"></div>
-          <Link href="/" className="text-2xl font-bold text-foreground">Vibe Learning</Link>
+          <Link href="/" className="text-2xl font-bold text-foreground">Learnstellation</Link>
         </div>
         <div className="flex items-center space-x-4">
           <Button variant="ghost" asChild>

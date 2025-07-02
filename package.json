@@ -1,8 +1,10 @@
 {
-  "name": "vibe-learning",
+  "name": "learnstellation",
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "author": "Dev Agnihotri",
+  "description": "Learnstellation - AI-Powered Learning Platform",
   "scripts": {
     "build": "next build",
     "check": "next lint && tsc --noEmit",

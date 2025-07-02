@@ -1,6 +1,6 @@
-# Vibe Learning App - Setup Complete! 🎉
+# Learnstellation - Setup Complete! 🎉
 
-Your Vibe Learning application has been successfully set up on your PC! Here's everything you need to know:
+Your Learnstellation application has been successfully set up on your PC! Here's everything you need to know:
 
 ## 🚀 What's Running
 
@@ -86,7 +86,7 @@ The following environment variables are configured:
 
 ## 🎉 Features Available
 
-Your Vibe Learning app includes:
+Your Learnstellation app includes:
 
 - **Modern UI** with Tailwind CSS and Radix UI components
 - **Database integration** with Prisma ORM

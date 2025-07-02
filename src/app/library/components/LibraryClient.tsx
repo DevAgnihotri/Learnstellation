@@ -44,7 +44,7 @@ export default function LibraryClient() {
             <Link href="/" className="flex items-center space-x-2">
               <ArrowLeft className="h-5 w-5" />
               <div className="h-8 w-8 rounded-lg bg-foreground"></div>
-              <span className="text-xl font-bold">Vibe Learning</span>
+              <span className="text-xl font-bold">Learnstellation</span>
             </Link>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/library" className="text-foreground font-medium">

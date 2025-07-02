@@ -107,7 +107,7 @@ export const roadmapRouter = createTRPCRouter({
         
         if (error instanceof Error) {
           if (error.message.includes("YouTube API key not found")) {
-            throw new Error("YouTube API is not configured. Please contact the administrator.");
+            throw new Error("YouTube API is not configured. Please contact Dev Agnihotri.");
           }
           if (error.message.includes("No YouTube videos found")) {
             throw new Error("No relevant videos found for this topic. Try a different search term.");
