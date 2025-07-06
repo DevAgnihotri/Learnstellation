@@ -4,12 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  NPM_VERSION = "9"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [context.production.environment]
   SKIP_ENV_VALIDATION = "false"

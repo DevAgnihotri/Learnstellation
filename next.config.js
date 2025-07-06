@@ -16,29 +16,13 @@ const config = {
     ignoreDuringBuilds: true,
   },
   webpack: (config, { isServer }) => {
-    // Fix for Zod locales issue - ignore all locale imports
+    // Fix for client-side issues
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
       };
     }
-    
-    // Add plugin to ignore locale files
-    config.plugins.push(
-      new (require('webpack')).IgnorePlugin({
-        resourceRegExp: /^\.\/locale$/,
-        contextRegExp: /moment$/,
-      })
-    );
-    
-    // Ignore zod locale files specifically
-    config.plugins.push(
-      new (require('webpack')).IgnorePlugin({
-        resourceRegExp: /locales/,
-        contextRegExp: /zod/,
-      })
-    );
     
     return config;
   },
