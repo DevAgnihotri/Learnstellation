@@ -1,7 +1,8 @@
 'use client';
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
@@ -107,10 +108,13 @@ export default function Home() {
               {!user ? (
                 <>
                   <Button variant="ghost" asChild>
-                    <Link href="#features">Features</Link>
+                    <Link href="/library">Roadmap Learning</Link>
                   </Button>
                   <Button variant="ghost" asChild>
-                    <Link href="#solution">Solution</Link>
+                    <Link href="/dashboard">Single Document</Link>
+                  </Button>
+                  <Button variant="ghost" asChild>
+                    <Link href="#features">Features</Link>
                   </Button>
                   <Button variant="ghost" asChild>
                     <Link href="#stats">Stats</Link>
@@ -275,106 +279,6 @@ export default function Home() {
                 personalized learning path. They get overwhelmed, lose motivation, and eventually give up on their dreams.
               </AlertDescription>
             </Alert>
-          </div>
-        </section>
-
-        {/* Step 3: The Student's Journey - Story Timeline */}
-        <section id="story" className="py-20">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-              <Clock className="w-16 h-16 mx-auto mb-4 text-blue-500" />
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">The Typical Student Journey</h2>
-              <p className="text-xl text-muted-foreground">Follow Alex&rsquo;s story - a student just like you</p>
-            </div>
-
-            <div className="max-w-4xl mx-auto">
-              <div className="space-y-8">
-                {[
-                  {
-                    step: 1,
-                    title: "🎯 The Spark",
-                    description: "Alex discovers an exciting new field - AI/ML - and dreams of becoming an expert",
-                    emotion: "😍 Excited & Motivated",
-                    time: "Day 1"
-                  },
-                  {
-                    step: 2,
-                    title: "🌊 Information Overload",
-                    description: "Google search returns 50,000+ resources. YouTube has thousands of tutorials. Where to start?",
-                    emotion: "😵 Overwhelmed & Confused",
-                    time: "Day 3"
-                  },
-                  {
-                    step: 3,
-                    title: "📚 Random Learning",
-                    description: "Starts with a random YouTube course, then jumps to a blog, then tries a different platform",
-                    emotion: "🤔 Uncertain & Scattered",
-                    time: "Week 2"
-                  },
-                  {
-                    step: 4,
-                    title: "🔄 Endless Loop",
-                    description: "Restarts multiple times, never completing anything. No clear progress tracking",
-                    emotion: "😤 Frustrated & Stuck",
-                    time: "Month 1"
-                  },
-                  {
-                    step: 5,
-                    title: "⏰ Time Crunch",
-                    description: "Realizes they've wasted weeks without real progress. Deadlines approaching",
-                    emotion: "😰 Stressed & Anxious",
-                    time: "Month 2"
-                  },
-                  {
-                    step: 6,
-                    title: "💔 The Breaking Point",
-                    description: "Loses motivation completely. Feels like they're not 'smart enough' for this",
-                    emotion: "😢 Defeated & Demotivated",
-                    time: "Month 3"
-                  },
-                  {
-                    step: 7,
-                    title: "❌ The Quit",
-                    description: "Gives up on the dream. Settles for something easier",
-                    emotion: "😞 Resigned & Regretful",
-                    time: "Month 4"
-                  }
-                ].map((story, index) => (
-                  <div key={index} className="flex gap-6 items-start">
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 text-white flex items-center justify-center font-bold text-lg">
-                        {story.step}
-                      </div>
-                    </div>
-                    <Card className="flex-1 border-l-4 border-l-red-400">
-                      <CardHeader>
-                        <CardTitle className="flex items-center justify-between">
-                          <span>{story.title}</span>
-                          <Badge variant="outline">{story.time}</Badge>
-                        </CardTitle>
-                        <CardDescription className="text-base">{story.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="text-lg font-semibold">{story.emotion}</div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="text-center mt-12">
-              <Card className="max-w-2xl mx-auto bg-red-50 dark:bg-red-900/20 border-2 border-red-300 dark:border-red-700">
-                <CardContent className="pt-6">
-                  <h3 className="text-2xl font-bold text-red-700 dark:text-red-400 mb-4">
-                    Sound Familiar? You&rsquo;re Not Alone.
-                  </h3>
-                  <p className="text-lg text-muted-foreground">
-                    Millions of students face this exact journey every day. But what if there was a better way?
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </section>
 
