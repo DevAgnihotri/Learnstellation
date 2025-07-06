@@ -53,15 +53,25 @@ import {
 } from "lucide-react";
 import ThemeToggle from "~/components/ThemeToggle";
 
-// Import stunning new components
-import { ThemedConstellation } from "~/components/ThemedConstellation";
-import { SectionCards } from "~/components/section-cards";
-import { ChartAreaInteractive } from "~/components/chart-area-interactive";
-import DraggableWindow from "~/components/DraggableWindow";
-
 export default function Home() {
   const [user] = useState<{ email?: string } | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
+  // Mock data for charts and statistics
+  const learningStats = {
+    totalStudents: 50000,
+    completionRate: 87,
+    avgTimeToSkill: 12,
+    skillsOffered: 200
+  };
+
+  const problemStats = [
+    { issue: "No Clear Roadmap", percentage: 89 },
+    { issue: "Information Overload", percentage: 76 },
+    { issue: "Lack of Personalization", percentage: 82 },
+    { issue: "Time Management", percentage: 71 }
+  ];
+  
   return (
     <div className="min-h-screen bg-background">
       {/* Top Infinite Marquee */}
@@ -129,18 +139,8 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section with Constellation Background */}
+      {/* Hero Section */}
       <section className="relative overflow-hidden py-20 flex items-center justify-center">
-        {/* Animated Constellation Background */}
-        <div className="absolute inset-0">
-          <ThemedConstellation
-            className="w-full h-full"
-            particleCount={120}
-            connectionDistance={100}
-            particleSpeed={0.2}
-          />
-        </div>
-        
         <div className="container mx-auto px-6 text-center relative z-10">
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -196,84 +196,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Beautiful Section Cards */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="py-16 px-6 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-950 dark:to-blue-950/20"
-      >
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Cosmic Learning Metrics
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Real-time insights from the learning constellation
-            </p>
-          </div>
-          <SectionCards />
-        </div>
-      </motion.section>
-
-      {/* Interactive Analytics Dashboard */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="py-16 px-6"
-      >
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Learning Universe Analytics
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Interactive data visualization powered by AI
-            </p>
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <ChartAreaInteractive />
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Floating AI Learning Assistant Demo */}
-      <DraggableWindow
-        title="🚀 AI Learning Assistant"
-        initialPosition={{ x: 50, y: 200 }}
-        initialSize={{ width: 350, height: 400 }}
-        className="z-40"
-      >
-        <div className="p-4 space-y-4">
-          <div className="flex items-center gap-2 text-purple-600">
-            <Brain className="w-5 h-5" />
-            <span className="font-semibold">Learning Constellation Active</span>
-          </div>
-          <div className="space-y-2">
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 p-3 rounded-lg">
-              <p className="text-sm font-medium">🎯 Current Goal</p>
-              <p className="text-xs text-muted-foreground">Master React Components</p>
-              <Progress value={75} className="mt-2 h-2" />
-            </div>
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950/20 dark:to-blue-950/20 p-3 rounded-lg">
-              <p className="text-sm font-medium">⚡ Next Topic</p>
-              <p className="text-xs text-muted-foreground">Advanced Hooks Patterns</p>
-            </div>
-            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 p-3 rounded-lg">
-              <p className="text-sm font-medium">🧠 AI Insight</p>
-              <p className="text-xs text-muted-foreground">&ldquo;Focus on useState optimization for 2x faster learning&rdquo;</p>
-            </div>
-          </div>
-          <Button size="sm" className="w-full bg-gradient-to-r from-purple-500 to-blue-500">
-            <PlayCircle className="w-4 h-4 mr-2" />
-            Continue Learning
-          </Button>
-        </div>
-      </DraggableWindow>
 
       {/* Bottom Marquee */}
       <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 text-white overflow-hidden">
