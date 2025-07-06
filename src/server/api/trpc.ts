@@ -9,7 +9,6 @@
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
 import { db } from "~/server/db";
@@ -27,15 +26,28 @@ import { db } from "~/server/db";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  // Create Supabase client for authentication  
-  const cookieStore = await cookies();
+  // Create Supabase client for authentication
+  // Extract cookies from headers for server-side usage
+  const cookieHeader = opts.headers.get('cookie') ?? '';
+  const cookieStore = new Map();
+  
+  // Parse cookies from header
+  if (cookieHeader) {
+    cookieHeader.split(';').forEach(cookie => {
+      const [name, value] = cookie.split('=').map(c => c.trim());
+      if (name && value) {
+        cookieStore.set(name, value);
+      }
+    });
+  }
+  
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {
-          return cookieStore.get(name)?.value;
+          return cookieStore.get(name);
         },
         set(_name: string, _value: string, _options: unknown) {
           // This is a read-only context, so we can't set cookies

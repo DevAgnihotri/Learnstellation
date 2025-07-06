@@ -15,6 +15,8 @@ This is a modern learning platform built with the [T3 Stack](https://create.t3.g
 - 🎨 **Modern UI**: Beautiful interface with Tailwind CSS and Radix UI
 - 📱 **Responsive Design**: Works on all devices
 - 🌙 **Dark/Light Mode**: Theme switching support
+- ⭐ **Constellation Effect**: Beautiful animated background with interactive stars
+- ⭐ **Constellation Effect**: Beautiful animated background with interactive stars
 
 ## 🛠️ Tech Stack
 
@@ -264,6 +266,8 @@ Access the interactive API documentation at: http://localhost:8001/docs
 
 ## 🤝 Contributing
 
+**Author**: Dev Agnihotri
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
@@ -274,7 +278,12 @@ Access the interactive API documentation at: http://localhost:8001/docs
 
 This project is licensed under the MIT License.
 
+**Created by**: Dev Agnihotri  
+**Project**: Learnstellation - AI-Powered Learning Platform
+
 ## 🙏 Acknowledgments
+
+**Created by**: Dev Agnihotri
 
 Built with:
 
@@ -287,7 +296,8 @@ Built with:
 
 ---
 
-**Happy Learning! 🎓✨**
+**Happy Learning with Learnstellation! 🎓✨**  
+_Developed by Dev Agnihotri_
 
 ## 📋 Quick Reference & Summary
 
@@ -338,3 +348,29 @@ npm run dev              # Frontend
 - `start-all.bat` - One-command startup
 - `SUPABASE_SETUP.md` - Supabase setup guide
 - `YOUTUBE_API_SETUP.md` - YouTube API setup guide
+
+---
+
+## 🎉 What's New in Learnstellation
+
+### ✨ Complete Rebranding
+
+- **Project Name**: Updated from "vibe-learning" to "Learnstellation"
+- **Author**: Dev Agnihotri
+- **Enhanced Branding**: All documentation, UI, and scripts updated with new identity
+
+### ⭐ New Features
+
+- **Constellation Background**: Beautiful animated starfield that responds to mouse movement
+- **Theme Integration**: Constellation adapts to light/dark mode automatically
+- **Performance Optimized**: Smooth animations that don't impact UI performance
+
+### 🚀 Ready to Launch
+
+Your Learnstellation platform is fully configured and ready for development or deployment!
+
+**Author**: Dev Agnihotri
+
+---
+
+**Happy Learning! 🎓✨**

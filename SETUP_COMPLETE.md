@@ -36,22 +36,22 @@ Your Learnstellation application has been successfully set up on your PC! Here's
 **Frontend (Next.js):**
 
 ```bash
-cd "d:\PROJECTS\Hackathon\Student\vibe-learning-main"
+cd "d:\PROJECTS\Hackathon\Student\learnstellation"
 npm run dev
 ```
 
 **Backend (Python):**
 
 ```bash
-cd "d:\PROJECTS\Hackathon\Student\vibe-learning-main"
+cd "d:\PROJECTS\Hackathon\Student\learnstellation"
 .\start-backend.bat
 ```
 
 Or manually:
 
 ```bash
-cd "d:\PROJECTS\Hackathon\Student\vibe-learning-main\src\python-backend"
-D:\PROJECTS\Hackathon\Student\vibe-learning-main\.venv\Scripts\uvicorn.exe app:app --reload --host 0.0.0.0 --port 8001
+cd "d:\PROJECTS\Hackathon\Student\learnstellation\src\python-backend"
+D:\PROJECTS\Hackathon\Student\learnstellation\.venv\Scripts\uvicorn.exe app:app --reload --host 0.0.0.0 --port 8001
 ```
 
 ### Other useful commands:
