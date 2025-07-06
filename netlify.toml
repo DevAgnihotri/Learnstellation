@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  SKIP_ENV_VALIDATION = "false"
+
+[context.deploy-preview.environment]
+  SKIP_ENV_VALIDATION = "true"
+
+[context.branch-deploy.environment]
+  SKIP_ENV_VALIDATION = "true"
