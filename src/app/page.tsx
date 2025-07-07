@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import BrutalistPreloader from "~/components/BrutalistPreloader";
 
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
@@ -61,6 +62,15 @@ import DraggableWindow from "~/components/DraggableWindow";
 
 export default function Home() {
   const [user] = useState<{ email?: string } | null>(null);
+  const [showPreloader, setShowPreloader] = useState(true);
+
+  const handlePreloaderComplete = () => {
+    setShowPreloader(false);
+  };
+
+  if (showPreloader) {
+    return <BrutalistPreloader onComplete={handlePreloaderComplete} />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -199,6 +209,7 @@ export default function Home() {
 
       {/* Beautiful Section Cards */}
       <motion.section
+        id="stats"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -220,6 +231,7 @@ export default function Home() {
 
       {/* Interactive Analytics Dashboard */}
       <motion.section
+        id="constellation-stats"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -237,6 +249,27 @@ export default function Home() {
           </div>
           <div className="max-w-4xl mx-auto">
             <ChartAreaInteractive />
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Features Section */}
+      <motion.section
+        id="features"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="py-16 px-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20"
+      >
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              AI-Powered Learning Features
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Experience the future of personalized education with our intelligent learning companion
+            </p>
           </div>
         </div>
       </motion.section>
