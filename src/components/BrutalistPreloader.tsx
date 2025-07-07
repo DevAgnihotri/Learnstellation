@@ -1,13 +1,12 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 
 interface PreloaderProps {
   onComplete: () => void;
 }
 
-export default function Preloader({ onComplete }: PreloaderProps) {
+export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0);
   const [displayCounter, setDisplayCounter] = useState(0);
   const [currentMessage, setCurrentMessage] = useState(0);
@@ -16,18 +15,18 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   const progressRef = useRef(0);
   const counterRef = useRef(0);
   const targetCounterRef = useRef(0);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
 
-  const messages = [
-    "INITIALIZING",
-    "DATA_TRANSFER", 
-    "COMPILING",
-    "FINALIZING",
-    "COMPLETE"
-  ];
+  const messages = useMemo(() => [
+    "INITIALIZING SYSTEM",
+    "LOADING DATA STREAMS", 
+    "COMPILING ALGORITHMS",
+    "FINALIZING PROTOCOLS",
+    "SYSTEM READY"
+  ], []);
 
-  // Smooth counter animation (like original)
-  const updateCounter = () => {
+  // Smooth counter animation (matching original)
+  const updateCounter = useCallback(() => {
     if (counterRef.current !== targetCounterRef.current) {
       const gap = targetCounterRef.current - counterRef.current;
       const step = gap > 10 ? 2 : 1;
@@ -42,9 +41,9 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         setTimeout(updateCounter, 40);
       }
     }
-  };
+  }, []);
 
-  // Simulate typing effect
+  // Simulate typing effect (matching original)
   const simulateTyping = (text: string) => {
     setTypingText('');
     let i = 0;
@@ -58,7 +57,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     typeNextChar();
   };
 
-  // Main animation loop (like original GSAP animation)
+  // Main animation loop (matching original GSAP timing)
   useEffect(() => {
     const duration = 6000; // 6 seconds like original
     const startTime = Date.now();
@@ -82,12 +81,13 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       targetCounterRef.current = currentProgress;
       updateCounter();
       
-      // Update messages based on progress (like original)
+      // Update messages based on progress (matching original)
       const activeIndex = Math.min(4, Math.floor(currentProgress / 20));
       if (activeIndex !== currentMessage) {
         setCurrentMessage(activeIndex);
-        if (activeIndex < messages.length) {
-          simulateTyping(messages[activeIndex]);
+        const message = messages[activeIndex];
+        if (message) {
+          simulateTyping(message);
         }
       }
       
@@ -98,239 +98,285 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         // Complete loading
         setTimeout(() => {
           setIsVisible(false);
-          setTimeout(() => onComplete(), 500);
+          setTimeout(onComplete, 800);
         }, 800);
       }
     };
-
+    
+    // Start typing first message
+    const firstMessage = messages[0];
+    if (firstMessage) {
+      simulateTyping(firstMessage);
+    }
+    
     // Start animation
     animationRef.current = requestAnimationFrame(animate);
-
+    
+    // Cleanup
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [currentMessage, onComplete]);
+  }, [onComplete, currentMessage, messages, updateCounter]);
 
   if (!isVisible) return null;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className="preloader"
-        initial={{ opacity: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100vh',
-          backgroundColor: '#121212',
-          color: '#f5f5f5',
-          zIndex: 9999,
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          fontFamily: '"Space Mono", monospace'
-        }}
-      >
-        {/* Pixel Grid Background */}
+    <div className="preloader">
+      {/* Pixel grid elements */}
+      <div className="pixel-grid">
         <div 
-          className="pixel-grid"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            opacity: 0.1
-          }}
-        >
-          {/* Top row - extends with progress */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: `${progress}%`,
-              height: '2px',
-              backgroundColor: '#f5f5f5',
-              transition: 'width 0.1s ease-out'
-            }}
-          />
-          {/* Bottom row - extends with progress */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              width: `${progress}%`,
-              height: '2px',
-              backgroundColor: '#f5f5f5',
-              transition: 'width 0.1s ease-out'
-            }}
-          />
-          {/* Left column - extends with progress */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '2px',
-              height: `${progress}%`,
-              backgroundColor: '#f5f5f5',
-              transition: 'height 0.1s ease-out'
-            }}
-          />
-          {/* Right column - extends with progress */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              width: '2px',
-              height: `${progress}%`,
-              backgroundColor: '#f5f5f5',
-              transition: 'height 0.1s ease-out'
-            }}
-          />
-        </div>
-
-        {/* Main Content */}
+          className="pixel-row top-row" 
+          style={{ width: `${progress}%` }}
+        />
         <div 
-          style={{
-            position: 'relative',
-            zIndex: 10,
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '2rem'
-          }}
-        >
-          {/* Massive Counter */}
-          <motion.div
-            style={{
-              position: 'relative',
-              fontSize: 'clamp(8rem, 20vw, 25rem)',
-              fontWeight: 700,
-              lineHeight: 1,
-              letterSpacing: '-0.02em',
-              marginBottom: '2rem'
-            }}
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              {displayCounter}
-            </div>
-            <div 
-              style={{
-                position: 'absolute',
-                top: '6px',
-                left: '6px',
-                fontSize: 'inherit',
-                fontWeight: 'inherit',
-                opacity: 0.2,
-                zIndex: 1
-              }}
-              aria-hidden="true"
-            >
-              {displayCounter}
-            </div>
-          </motion.div>
+          className="pixel-row bottom-row" 
+          style={{ width: `${progress}%` }}
+        />
+        <div 
+          className="pixel-column left-column" 
+          style={{ height: `${progress}%` }}
+        />
+        <div 
+          className="pixel-column right-column" 
+          style={{ height: `${progress}%` }}
+        />
+      </div>
 
-          {/* Status Text */}
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <motion.div
-              style={{
-                fontSize: '1.8rem',
-                fontWeight: 700,
-                marginBottom: '1.5rem',
-                letterSpacing: '0.1em'
-              }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1 }}
-            >
-              LOADING SYSTEM
-            </motion.div>
-            
-            <div
-              style={{
-                fontSize: '1.2rem',
-                fontWeight: 400,
-                opacity: 0.9,
-                letterSpacing: '0.05em',
-                minHeight: '1.5rem',
-                fontFamily: 'monospace'
-              }}
-            >
-              {typingText}
-            </div>
+      {/* Massive counter */}
+      <div className="counter-wrapper">
+        <div className="counter">{displayCounter}</div>
+        <div className="counter-outline" aria-hidden="true">{displayCounter}</div>
+      </div>
+
+      {/* Status text */}
+      <div className="text-container">
+        <div className="loading-text">LOADING SYSTEM</div>
+        <div className="system-messages">
+          <div className="message active">
+            <span className="bracket">[</span>
+            <span className="message-text">{typingText}</span>
+            <span className="bracket">]</span>
           </div>
+        </div>
+      </div>
 
-          {/* Progress Bar */}
+      {/* Progress bar */}
+      <div className="progress-container">
+        <div className="progress-track">
           <div 
-            style={{
-              width: '100%',
-              maxWidth: '700px',
-              marginBottom: '2rem'
-            }}
-          >
-            <div 
-              style={{
-                width: '100%',
-                height: '6px',
-                backgroundColor: '#1a1a1a',
-                borderRadius: '3px',
-                overflow: 'hidden',
-                marginBottom: '1.5rem',
-                border: '1px solid #333'
-              }}
-            >
-              <div
-                style={{
-                  height: '100%',
-                  width: `${progress}%`,
-                  backgroundColor: '#f5f5f5',
-                  borderRadius: '3px',
-                  transition: 'width 0.1s ease-out'
-                }}
-              />
-            </div>
-            
-            {/* Progress Markers */}
-            <div 
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: '0.9rem',
-                fontWeight: 600,
-                fontFamily: 'monospace'
-              }}
-            >
-              {[0, 25, 50, 75, 100].map((marker) => (
-                <div
-                  key={marker}
-                  style={{
-                    opacity: progress >= marker ? 1 : 0.4,
-                    transition: 'opacity 0.3s ease',
-                    color: progress >= marker ? '#f5f5f5' : '#666'
-                  }}
-                >
-                  {marker.toString().padStart(2, '0')}
-                </div>
-              ))}
-            </div>
-          </div>
+            className="progress-bar" 
+            style={{ width: `${progress}%` }}
+          />
         </div>
-      </motion.div>
-    </AnimatePresence>
+        <div className="progress-markers">
+          <div className={`marker ${progress >= 0 ? 'active' : ''}`} data-position="0">0</div>
+          <div className={`marker ${progress >= 25 ? 'active' : ''}`} data-position="25">25</div>
+          <div className={`marker ${progress >= 50 ? 'active' : ''}`} data-position="50">50</div>
+          <div className={`marker ${progress >= 75 ? 'active' : ''}`} data-position="75">75</div>
+          <div className={`marker ${progress >= 100 ? 'active' : ''}`} data-position="100">100</div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .preloader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          background-color: #121212;
+          z-index: 1000;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          font-family: 'Space Mono', monospace;
+          color: #f5f5f5;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        }
+
+        .pixel-grid {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 2;
+        }
+
+        .pixel-row,
+        .pixel-column {
+          position: absolute;
+          background-color: #f5f5f5;
+          opacity: 0.1;
+          transition: width 0.2s ease, height 0.2s ease;
+        }
+
+        .pixel-row {
+          height: 1px;
+          left: 0;
+        }
+
+        .pixel-column {
+          width: 1px;
+          top: 0;
+        }
+
+        .top-row {
+          top: 20%;
+        }
+
+        .bottom-row {
+          bottom: 20%;
+        }
+
+        .left-column {
+          left: 20%;
+        }
+
+        .right-column {
+          right: 20%;
+        }
+
+        .counter-wrapper {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 10;
+        }
+
+        .counter {
+          font-size: clamp(10rem, 20vw, 30rem);
+          font-weight: 900;
+          line-height: 0.8;
+          text-align: center;
+          color: #f5f5f5;
+          text-shadow: 0 0 20px rgba(245, 245, 245, 0.5);
+          position: relative;
+          z-index: 2;
+        }
+
+        .counter-outline {
+          position: absolute;
+          top: 0;
+          left: 0;
+          font-size: clamp(10rem, 20vw, 30rem);
+          font-weight: 900;
+          line-height: 0.8;
+          text-align: center;
+          color: transparent;
+          -webkit-text-stroke: 2px #e0e0e0;
+          text-stroke: 2px #e0e0e0;
+          opacity: 0.3;
+          z-index: 1;
+        }
+
+        .text-container {
+          position: absolute;
+          bottom: 15%;
+          left: 50%;
+          transform: translateX(-50%);
+          text-align: center;
+          z-index: 10;
+        }
+
+        .loading-text {
+          font-size: 1.5rem;
+          font-weight: 700;
+          margin-bottom: 1rem;
+          letter-spacing: 0.2em;
+          color: #f5f5f5;
+        }
+
+        .system-messages {
+          min-height: 2rem;
+        }
+
+        .message {
+          font-size: 1rem;
+          font-weight: 400;
+          letter-spacing: 0.1em;
+          color: #e0e0e0;
+          opacity: 0.8;
+        }
+
+        .message.active {
+          opacity: 1;
+          color: #f5f5f5;
+        }
+
+        .bracket {
+          color: #888;
+          margin: 0 0.5rem;
+        }
+
+        .message-text {
+          min-width: 200px;
+          display: inline-block;
+          text-align: left;
+        }
+
+        .progress-container {
+          position: absolute;
+          bottom: 5%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80%;
+          max-width: 600px;
+          z-index: 10;
+        }
+
+        .progress-track {
+          width: 100%;
+          height: 2px;
+          background-color: #333;
+          border-radius: 1px;
+          overflow: hidden;
+          margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+          height: 100%;
+          background-color: #f5f5f5;
+          transition: width 0.3s ease;
+        }
+
+        .progress-markers {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.75rem;
+          color: #888;
+        }
+
+        .marker {
+          transition: color 0.3s ease;
+        }
+
+        .marker.active {
+          color: #f5f5f5;
+        }
+
+        @media (max-width: 768px) {
+          .counter {
+            font-size: clamp(6rem, 15vw, 20rem);
+          }
+          
+          .counter-outline {
+            font-size: clamp(6rem, 15vw, 20rem);
+          }
+          
+          .loading-text {
+            font-size: 1.2rem;
+          }
+          
+          .progress-container {
+            width: 90%;
+          }
+        }
+      `}</style>
+    </div>
   );
 }

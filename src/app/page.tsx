@@ -103,19 +103,19 @@ export default function Home() {
               Learnstellation
             </span>
           </div>
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="flex items-center space-x-4">
             {!user ? (
               <>
-                <Button variant="ghost" asChild>
+                <Button variant="ghost" asChild className="hidden sm:inline-flex">
                   <Link href="/library">Roadmap Learning</Link>
                 </Button>
-                <Button variant="ghost" asChild>
+                <Button variant="ghost" asChild className="hidden sm:inline-flex">
                   <Link href="/dashboard">Single Document</Link>
                 </Button>
-                <Button variant="ghost" asChild>
+                <Button variant="ghost" asChild className="hidden lg:inline-flex">
                   <Link href="#features">Features</Link>
                 </Button>
-                <Button variant="ghost" asChild>
+                <Button variant="ghost" asChild className="hidden lg:inline-flex">
                   <Link href="#stats">Stats</Link>
                 </Button>
                 <ThemeToggle />
@@ -125,11 +125,11 @@ export default function Home() {
               </>
             ) : (
               <div className="flex items-center space-x-4">
-                <span className="text-muted-foreground">Welcome, {user.email}</span>
-                <Button variant="ghost" asChild>
+                <span className="text-muted-foreground hidden sm:inline">Welcome, {user.email}</span>
+                <Button variant="ghost" asChild className="hidden sm:inline-flex">
                   <Link href="/library">Roadmap Learning</Link>
                 </Button>
-                <Button variant="ghost" asChild>
+                <Button variant="ghost" asChild className="hidden sm:inline-flex">
                   <Link href="/dashboard">Single Document</Link>
                 </Button>
                 <ThemeToggle />
@@ -301,9 +301,11 @@ export default function Home() {
               <p className="text-xs text-muted-foreground">&ldquo;Focus on useState optimization for 2x faster learning&rdquo;</p>
             </div>
           </div>
-          <Button size="sm" className="w-full bg-gradient-to-r from-purple-500 to-blue-500">
-            <PlayCircle className="w-4 h-4 mr-2" />
-            Continue Learning
+          <Button size="sm" className="w-full bg-gradient-to-r from-purple-500 to-blue-500" asChild>
+            <Link href="/dashboard">
+              <PlayCircle className="w-4 h-4 mr-2" />
+              Continue Learning
+            </Link>
           </Button>
         </div>
       </DraggableWindow>

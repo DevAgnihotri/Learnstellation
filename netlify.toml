@@ -4,15 +4,37 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-service.herokuapp.com"
+  NEXT_PUBLIC_DEMO_MODE = "false"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 [context.production.environment]
   SKIP_ENV_VALIDATION = "false"
+  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-service.herokuapp.com"
+  NEXT_PUBLIC_DEMO_MODE = "false"
 
 [context.deploy-preview.environment]
   SKIP_ENV_VALIDATION = "true"
+  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-service.herokuapp.com"
+  NEXT_PUBLIC_DEMO_MODE = "true"
 
 [context.branch-deploy.environment]
   SKIP_ENV_VALIDATION = "true"
+  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-service.herokuapp.com"  
+  NEXT_PUBLIC_DEMO_MODE = "true"
+
+# Redirect API calls to external backend
+[[redirects]]
+  from = "/api/backend/*"
+  to = "https://your-backend-service.herokuapp.com/:splat"
+  status = 200
+  force = true
+
+# Handle client-side routing for Next.js
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false

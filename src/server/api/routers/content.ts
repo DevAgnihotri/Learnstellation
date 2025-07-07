@@ -7,7 +7,21 @@ import { generateTopicComparison } from "~/commands-ai/compare";
 import llms from "~/lib/llms";
 
 // Backend URL for server-side requests
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
+
+// Check if we're in production without backend (for demo purposes)
+const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === 'true' || !process.env.NEXT_PUBLIC_BACKEND_URL;
+
+// Mock data for demo mode
+const MOCK_CONTENT = {
+  total_pages: 1,
+  pages: [
+    {
+      page_number: 1,
+      content: "This is a demo document showing the learning platform's capabilities. In production, this would contain the actual extracted content from your uploaded documents."
+    }
+  ]
+};
 
 // Define the input structure that matches the Python backend response
 const ContentInput = z.object({
@@ -25,28 +39,42 @@ export const contentRouter = createTRPCRouter({
       try {
         console.log(`🚀 Starting topic extraction for content ID: ${input.contentId}`);
         
-        // Fetch formatted content from Python backend with timeout
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for fetch
+        let content;
         
-        const response = await fetch(`${BACKEND_URL}/content/${input.contentId}/topic-extractor-format`, {
-          signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch content: ${response.status} ${response.statusText}`);
+        // Check if we're in demo mode
+        if (DEMO_MODE) {
+          console.log('📋 Running in demo mode - using mock content');
+          content = MOCK_CONTENT;
+        } else {
+          // Fetch formatted content from Python backend with timeout
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for fetch
+          
+          try {
+            const response = await fetch(`${BACKEND_URL}/content/${input.contentId}/topic-extractor-format`, {
+              signal: controller.signal
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+              throw new Error(`Failed to fetch content: ${response.status} ${response.statusText}`);
+            }
+            
+            const responseData = await response.json() as { success: boolean; data: unknown };
+            
+            if (!responseData.success) {
+              throw new Error("Failed to get formatted content from Python backend");
+            }
+            
+            // Validate the content structure
+            content = ContentInput.parse(responseData.data);
+          } catch (error) {
+            console.warn('⚠️ Backend unavailable, falling back to demo mode:', error);
+            content = MOCK_CONTENT;
+          }
         }
         
-        const responseData = await response.json() as { success: boolean; data: unknown };
-        
-        if (!responseData.success) {
-          throw new Error("Failed to get formatted content from Python backend");
-        }
-        
-        // Validate the content structure
-        const content = ContentInput.parse(responseData.data);
         console.log(`📄 Document has ${content.total_pages} pages`);
         
         // Extract topics using the topic extractor with timeout
