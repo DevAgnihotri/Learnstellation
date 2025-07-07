@@ -85,12 +85,12 @@ class PDFTextExtractor:
             else:
                 return page.extract_text(orientations)
         elif extraction_mode == "layout":
-            return page.extract_text(
-                extraction_mode="layout",
-                layout_mode_space_vertically=layout_mode_space_vertically,
-                layout_mode_scale_weight=layout_mode_scale_weight,
-                layout_mode_strip_rotated=layout_mode_strip_rotated
-            )
+            # For layout mode, we'll fall back to plain extraction since
+            # the extraction_mode parameter is not supported in current PyPDF version
+            try:
+                return page.extract_text()
+            except Exception:
+                return page.extract_text()
         else:
             raise ValueError("extraction_mode must be 'plain' or 'layout'")
     

@@ -142,7 +142,8 @@ export function ContentUploader({ onUploadSuccess, onUploadError }: ContentUploa
         };
 
         xhr.onerror = () => {
-          reject(new Error('Network error during upload'));
+          console.error('Network error - Failed to connect to:', endpoint);
+          reject(new Error(`Network error during upload. Failed to connect to backend at ${process.env.NEXT_PUBLIC_BACKEND_URL}. Make sure the Python backend is running.`));
         };
       });
 
@@ -150,6 +151,9 @@ export function ContentUploader({ onUploadSuccess, onUploadError }: ContentUploa
       const endpoint = content instanceof File ? 
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload-pdf` : 
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload-content`;
+
+      console.log('Uploading to endpoint:', endpoint);
+      console.log('Backend URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
 
       xhr.open('POST', endpoint);
       xhr.send(formData);
@@ -286,7 +290,7 @@ export function ContentUploader({ onUploadSuccess, onUploadError }: ContentUploa
                 isDragOver
                   ? 'border-purple-400 bg-purple-500/10'
                   : 'border-white/30 hover:border-white/50'
-              } ${isUploading ? 'pointer-events-none opacity-50' : ''}`}
+              } ${isUploading ? 'pointer-events-none opacity-50 cursor-not-allowed' : 'hover:cursor-pointer'}`}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}

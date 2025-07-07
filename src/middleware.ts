@@ -1,8 +1,9 @@
-import { type NextRequest } from 'next/server'
-import { updateSession } from '~/utils/supabase/middleware'
+import { type NextRequest, NextResponse } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-  return await updateSession(request)
+export async function middleware(_request: NextRequest) {
+  // For Firebase auth, we don't need server-side middleware
+  // Auth state is handled on the client side
+  return NextResponse.next()
 }
 
 export const config = {

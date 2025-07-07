@@ -6,7 +6,7 @@ import { Slider } from "~/components/ui/slider";
 import { ArrowLeft, MessageSquare, X, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import ThemeToggle from "~/components/ThemeToggle";
-import { PDFViewer } from "./PDFViewer";
+import { ContentViewer } from "./ContentViewer";
 import { VideoPlayer } from "./VideoPlayer";
 import { WebsiteViewer } from "./WebsiteViewer";
 import { ChatPanel } from "./ChatPanel";
@@ -213,15 +213,23 @@ export function LearningClient({ contentId }: LearningClientProps) {
   };
 
   const renderContentViewer = () => {
-    if (!contentData) return null;
+    if (!contentData) {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center text-white">
+            <div className="animate-spin rounded-full h-12 w-12 border-2 border-white border-t-transparent mb-4 mx-auto"></div>
+            <p>Loading content...</p>
+          </div>
+        </div>
+      );
+    }
 
     switch (contentData.content_type) {
       case 'pdf-file':
       case 'pdf-link':
         return (
-          <PDFViewer 
+          <ContentViewer 
             contentId={contentData.content_id}
-            url={contentData.url}
             title={contentData.title}
           />
         );
@@ -240,7 +248,14 @@ export function LearningClient({ contentId }: LearningClientProps) {
           />
         );
       default:
-        return <div className="text-white">Unsupported content type</div>;
+        return (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center text-white">
+              <p className="text-lg mb-4">Unsupported content type: {contentData.content_type}</p>
+              <p className="text-gray-300">Content ID: {contentData.content_id}</p>
+            </div>
+          </div>
+        );
     }
   };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ContentUploader, type ContentType } from "~/components/ContentUploader";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
@@ -22,6 +22,32 @@ export function DashboardClient() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isProcessingTopics, setIsProcessingTopics] = useState(false);
+  const [backendStatus, setBackendStatus] = useState<'checking' | 'online' | 'offline'>('checking');
+
+  // Test backend connectivity on component mount
+  useEffect(() => {
+    const testBackendConnectivity = async () => {
+      try {
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+        console.log('Testing backend connectivity at:', backendUrl);
+        
+        const response = await fetch(`${backendUrl}/`);
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Backend response:', data);
+          setBackendStatus('online');
+        } else {
+          console.error('Backend responded with error:', response.status);
+          setBackendStatus('offline');
+        }
+      } catch (error) {
+        console.error('Backend connectivity test failed:', error);
+        setBackendStatus('offline');
+      }
+    };
+
+    testBackendConnectivity();
+  }, []);
 
   // TRPC mutations for topic extraction
   const extractTopics = api.content.extractTopics.useMutation();
@@ -149,6 +175,30 @@ export function DashboardClient() {
 
   return (
     <div className="space-y-6">
+      {/* Backend Status */}
+      <div className={`p-4 rounded-lg border ${
+        backendStatus === 'online' 
+          ? 'bg-green-500/20 border-green-500/30' 
+          : backendStatus === 'offline'
+          ? 'bg-red-500/20 border-red-500/30'
+          : 'bg-yellow-500/20 border-yellow-500/30'
+      }`}>
+        <p className={`${
+          backendStatus === 'online' 
+            ? 'text-green-200' 
+            : backendStatus === 'offline'
+            ? 'text-red-200'
+            : 'text-yellow-200'
+        }`}>
+          Backend Status: {backendStatus === 'checking' ? 'Checking...' : backendStatus === 'online' ? '✅ Online' : '❌ Offline'}
+        </p>
+        {backendStatus === 'offline' && (
+          <p className="text-red-300 text-sm mt-1">
+            Make sure the Python backend is running on http://localhost:8001
+          </p>
+        )}
+      </div>
+      
       {/* Status Messages */}
       {error && (
         <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-lg">

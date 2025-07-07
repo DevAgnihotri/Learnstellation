@@ -196,3 +196,22 @@
 .animate-marquee-reverse {
   animation: marquee 25s linear infinite reverse;
 }
+
+/* Cursor pointer for interactive elements */
+button, [role="button"], [role="tab"], input[type="submit"], input[type="button"], .cursor-pointer {
+  cursor: pointer !important;
+}
+
+button:disabled, [role="button"]:disabled, input:disabled {
+  cursor: not-allowed !important;
+}
+
+/* Links and clickable elements */
+a, [role="link"] {
+  cursor: pointer;
+}
+
+/* Form controls */
+select, input[type="checkbox"], input[type="radio"] {
+  cursor: pointer;
+}
