@@ -194,7 +194,7 @@ export function DashboardClient() {
         </p>
         {backendStatus === 'offline' && (
           <p className="text-red-300 text-sm mt-1">
-            Make sure the Python backend is running on http://localhost:8001
+            Make sure the Python backend is running on {process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8001'}
           </p>
         )}
       </div>
