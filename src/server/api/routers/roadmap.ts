@@ -243,6 +243,16 @@ export const roadmapRouter = createTRPCRouter({
         
       } catch (error) {
         console.error("❌ Error retrieving roadmaps:", error);
+        
+        // Handle database connection errors gracefully
+        if (error instanceof Error && error.message.includes('Unable to open the database file')) {
+          console.warn("⚠️ Database not available, returning empty result");
+          return {
+            success: true,
+            data: []
+          };
+        }
+        
         throw new Error(`Failed to retrieve roadmaps: ${error instanceof Error ? error.message : String(error)}`);
       }
     }),
