@@ -4,29 +4,28 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-app.herokuapp.com"
-  NEXT_PUBLIC_DEMO_MODE = "false"
+  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-name.onrender.com"
+  NEXT_PUBLIC_DEMO_MODE = "true"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 [context.production.environment]
   SKIP_ENV_VALIDATION = "false"
-  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-app.herokuapp.com"
-  NEXT_PUBLIC_DEMO_MODE = "false"
+  NEXT_PUBLIC_DEMO_MODE = "true"
 
 [context.deploy-preview.environment]
   SKIP_ENV_VALIDATION = "true"
-  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-app.herokuapp.com"
   NEXT_PUBLIC_DEMO_MODE = "true"
 
 [context.branch-deploy.environment]
   SKIP_ENV_VALIDATION = "true"
-  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-app.herokuapp.com"  
+  NEXT_PUBLIC_BACKEND_URL = "https://your-backend-name.onrender.com"  
   NEXT_PUBLIC_DEMO_MODE = "true"
 
 # Handle Next.js routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
+  status = 200
   status = 200

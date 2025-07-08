@@ -1,0 +1,9 @@
+# Exclude Python backend from Netlify deployment
+src/python-backend/
+*.py
+requirements.txt
+runtime.txt
+Procfile
+start-backend.bat
+start-backend.sh
+start-database.sh

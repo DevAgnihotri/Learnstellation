@@ -6,51 +6,15 @@ import { motion } from "framer-motion";
 import BrutalistPreloader from "~/components/BrutalistPreloader";
 
 import { Button } from "~/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Progress } from "~/components/ui/progress";
-import { Calendar } from "~/components/ui/calendar";
 import { 
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  RadialBarChart,
-  RadialBar,
-  Legend
-} from "recharts";
-import { 
-  BookOpen, 
   Brain, 
-  Target, 
-  Zap, 
   Star, 
-  TrendingUp, 
-  Users, 
-  Clock,
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  Lightbulb,
-  Rocket,
-  Globe,
-  PlayCircle,
-  BarChart3,
-  PieChart as PieChartIcon,
-  Activity,
-  Award,
   Sparkles,
-  Navigation,
+  Rocket,
   Telescope,
-  MapPin
+  PlayCircle
 } from "lucide-react";
 import ThemeToggle from "~/components/ThemeToggle";
 
