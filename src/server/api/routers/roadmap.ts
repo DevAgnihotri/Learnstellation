@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { generateRoadmap } from "~/course-builder-ai/roadmap";
 import { youtubeResources } from "~/course-builder-ai/resources";
-import { generateProjectsForRoadmap, type Project } from "~/course-builder-ai/projects";
+import { generateProjectsForRoadmap } from "~/course-builder-ai/projects";
 import llms from "~/lib/llms";
 import { db } from "~/server/db";
 
@@ -170,10 +170,9 @@ export const roadmapRouter = createTRPCRouter({
         }))
       })
     }))
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       try {
         console.log(`💾 Starting roadmap save for: ${input.roadmap.title}`);
-        console.log(`👤 User ID: ${ctx.user?.id ?? 'anonymous'}`);
         
         // Create the roadmap record
         const savedRoadmap = await db.roadmap.create({
@@ -181,14 +180,14 @@ export const roadmapRouter = createTRPCRouter({
             title: input.roadmap.title,
             description: input.roadmap.description,
             difficulty: input.roadmap.difficulty,
-            profileId: ctx.user?.id ?? null, // Use the authenticated user ID
+            profileId: null, // Anonymous for now
             topics: {
               create: input.roadmap.topics.map(topic => ({
                 id: topic.id,
                 title: topic.title,
                 summary: topic.summary,
                 level: topic.level,
-                parentId: topic.parentId || null
+                parentId: topic.parentId ?? null
               }))
             }
           },
@@ -231,14 +230,13 @@ export const roadmapRouter = createTRPCRouter({
 
   getUserRoadmaps: publicProcedure
     .input(z.object({}))
-    .query(async ({ ctx }) => {
+    .query(async () => {
       try {
-        const profileId = ctx.user?.id ?? null;
-        console.log(`📚 Retrieving roadmaps for profile: ${profileId ?? 'anonymous'}`);
+        console.log(`📚 Retrieving roadmaps for anonymous user`);
         
         const roadmaps = await db.roadmap.findMany({
           where: {
-            profileId: profileId
+            profileId: null
           },
           include: {
             topics: {
@@ -768,8 +766,8 @@ export const roadmapRouter = createTRPCRouter({
           description: project.description,
           difficulty: project.difficulty,
           estimatedTime: project.estimatedTime,
-          technologies: JSON.parse(project.technologies),
-          deliverables: JSON.parse(project.deliverables),
+          technologies: JSON.parse(project.technologies) as string[],
+          deliverables: JSON.parse(project.deliverables) as string[],
           createdAt: project.createdAt,
           updatedAt: project.updatedAt,
           relatedTopics: project.relatedTopics.map(rt => ({

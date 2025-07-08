@@ -36,6 +36,9 @@ yarn-error.log*
 .env
 .env*.local
 
+# netlify environment variables (contains sensitive API keys)
+NETLIFY_ENVIRONMENT_VARIABLES.md
+
 # vercel
 .vercel
 
