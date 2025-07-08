@@ -15,7 +15,7 @@ export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
   const progressRef = useRef(0);
   const counterRef = useRef(0);
   const targetCounterRef = useRef(0);
-  const animationRef = useRef<number | undefined>(undefined);
+  const animationRef = useRef<number | undefined>();
 
   const messages = useMemo(() => [
     "INITIALIZING SYSTEM",

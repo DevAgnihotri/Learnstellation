@@ -24,7 +24,7 @@ app = FastAPI(title="Learnstellation Content API", version="1.0.0")
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001", "https://learnstellation.vercel.app"],  # Next.js dev server
+    allow_origins=["http://localhost:3000", "http://localhost:3001", "https://*.netlify.app", "https://learnstellation.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
