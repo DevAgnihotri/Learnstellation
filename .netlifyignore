@@ -7,3 +7,26 @@ Procfile
 start-backend.bat
 start-backend.sh
 start-database.sh
+start-all.bat
+
+# Python-specific files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.pytest_cache
+venv/
+env/
+.venv/
+.env
+
+# Additional Python files that might trigger Python installation
+.python-version
+python-version
+.mise.toml
+mise.toml

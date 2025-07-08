@@ -1,11 +1,14 @@
 [build]
   command = "npm run build"
   publish = ".next"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF . --"
 
 [build.environment]
   NODE_VERSION = "18"
   NEXT_PUBLIC_BACKEND_URL = "https://learnstellation.onrender.com"
   NEXT_PUBLIC_DEMO_MODE = "true"
+  # Force Netlify to use Node.js only, ignore Python files
+  NETLIFY_SKIP_PYTHON = "true"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
