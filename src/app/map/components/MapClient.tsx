@@ -250,12 +250,13 @@ export default function MapClient() {
       console.log("📖 Roadmap loaded from database:", loadRoadmapQuery.data.data);
       const roadmapData = loadRoadmapQuery.data.data.roadmap;
       
-      // Convert parentId from null to undefined for compatibility
+      // Convert parentId from null to undefined for compatibility and ensure children array exists
       const convertedRoadmap = {
         ...roadmapData,
         topics: roadmapData.topics.map(topic => ({
           ...topic,
-          parentId: topic.parentId ?? undefined
+          parentId: topic.parentId ?? undefined,
+          children: topic.children || []
         }))
       };
       
@@ -408,7 +409,7 @@ export default function MapClient() {
   };
 
   const getTopicsByLevel = (level: number): Topic[] => {
-    if (!roadmap) return [];
+    if (!roadmap || !roadmap.topics || !Array.isArray(roadmap.topics)) return [];
     return roadmap.topics.filter(topic => topic.level === level);
   };
 
@@ -626,7 +627,7 @@ export default function MapClient() {
                     <p className="text-sm text-muted-foreground">{selectedTopic.summary}</p>
                   </div>
                   
-                  {selectedTopic.children.length > 0 && (
+                  {selectedTopic.children && selectedTopic.children.length > 0 && (
                     <div>
                       <Label className="text-sm font-medium">Related Topics:</Label>
                       <div className="flex flex-wrap gap-1 mt-2">

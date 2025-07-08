@@ -125,6 +125,10 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
   };
 
   const calculateNodePositions = (roadmap: Roadmap): TopicNode[] => {
+    if (!roadmap || !roadmap.topics || !Array.isArray(roadmap.topics)) {
+      return [];
+    }
+    
     const nodes: TopicNode[] = [];
     // Base radii for each level - these will be adjusted for collision avoidance
     const levelRadii = [0, 250, 400, 600, 800];
@@ -680,9 +684,9 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
               {toolMode === 'select' ? 'Click nodes to see details • Use hand tool to drag canvas' : 'Drag to pan the canvas • Switch to select tool to click nodes'} • Scroll to zoom
             </div>
             <div className="text-xs text-gray-400">
-              Foundation: {roadmap.topics.filter(t => t.level === 0).length} • 
-              Core: {roadmap.topics.filter(t => t.level === 1).length} • 
-              Advanced: {roadmap.topics.filter(t => t.level >= 2).length} topics
+              Foundation: {roadmap.topics?.filter(t => t.level === 0).length ?? 0} • 
+              Core: {roadmap.topics?.filter(t => t.level === 1).length ?? 0} • 
+              Advanced: {roadmap.topics?.filter(t => t.level >= 2).length ?? 0} topics
             </div>
           </div>
         </Card>
