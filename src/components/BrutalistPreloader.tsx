@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 
 interface PreloaderProps {
   onComplete: () => void;
@@ -9,23 +9,24 @@ interface PreloaderProps {
 export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0);
   const [displayCounter, setDisplayCounter] = useState(0);
-  const [currentMessage, setCurrentMessage] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [typingText, setTypingText] = useState('');
   const progressRef = useRef(0);
   const counterRef = useRef(0);
   const targetCounterRef = useRef(0);
-  const animationRef = useRef<number | undefined>();
+  const animationRef = useRef<number | undefined>(undefined);
+  const lastMessageIndex = useRef(0);
 
+  // Exact messages from original
   const messages = useMemo(() => [
-    "INITIALIZING SYSTEM",
-    "LOADING DATA STREAMS", 
-    "COMPILING ALGORITHMS",
-    "FINALIZING PROTOCOLS",
-    "SYSTEM READY"
+    "INITIALIZING",
+    "DATA_TRANSFER", 
+    "COMPILING",
+    "FINALIZING",
+    "COMPLETE"
   ], []);
 
-  // Smooth counter animation (matching original)
+  // Smooth counter animation (exactly matching original)
   const updateCounter = useCallback(() => {
     if (counterRef.current !== targetCounterRef.current) {
       const gap = targetCounterRef.current - counterRef.current;
@@ -43,7 +44,7 @@ export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
     }
   }, []);
 
-  // Simulate typing effect (matching original)
+  // Simulate typing effect (exactly matching original)
   const simulateTyping = (text: string) => {
     setTypingText('');
     let i = 0;
@@ -57,7 +58,7 @@ export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
     typeNextChar();
   };
 
-  // Main animation loop (matching original GSAP timing)
+  // Main animation loop (exactly matching original GSAP timing)
   useEffect(() => {
     const duration = 6000; // 6 seconds like original
     const startTime = Date.now();
@@ -81,14 +82,14 @@ export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
       targetCounterRef.current = currentProgress;
       updateCounter();
       
-      // Update messages based on progress (matching original)
+      // Update messages based on progress (exactly matching original)
       const activeIndex = Math.min(4, Math.floor(currentProgress / 20));
-      if (activeIndex !== currentMessage) {
-        setCurrentMessage(activeIndex);
+      if (activeIndex !== lastMessageIndex.current) {
         const message = messages[activeIndex];
         if (message) {
           simulateTyping(message);
         }
+        lastMessageIndex.current = activeIndex;
       }
       
       // Continue animation
@@ -118,7 +119,7 @@ export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [onComplete, currentMessage, messages, updateCounter]);
+  }, [onComplete, messages, updateCounter]);
 
   if (!isVisible) return null;
 
@@ -127,19 +128,23 @@ export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
       {/* Pixel grid elements */}
       <div className="pixel-grid">
         <div 
-          className="pixel-row top-row" 
+          className="pixel-row"
+          id="top-row"
           style={{ width: `${progress}%` }}
         />
         <div 
-          className="pixel-row bottom-row" 
+          className="pixel-row"
+          id="bottom-row"
           style={{ width: `${progress}%` }}
         />
         <div 
-          className="pixel-column left-column" 
+          className="pixel-column"
+          id="left-column"
           style={{ height: `${progress}%` }}
         />
         <div 
-          className="pixel-column right-column" 
+          className="pixel-column"
+          id="right-column"
           style={{ height: `${progress}%` }}
         />
       </div>
@@ -155,31 +160,95 @@ export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
         <div className="loading-text">LOADING SYSTEM</div>
         <div className="system-messages">
           <div className="message active">
-            <span className="bracket">[</span>
-            <span className="message-text">{typingText}</span>
-            <span className="bracket">]</span>
+            {typingText}
           </div>
         </div>
       </div>
 
-      {/* Progress bar */}
-      <div className="progress-container">
-        <div className="progress-track">
+      {/* Progress markers */}
+      <div className="loading-bar-container">
+        <div className="loading-bar">
           <div 
-            className="progress-bar" 
+            className="progress"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <div className="progress-markers">
-          <div className={`marker ${progress >= 0 ? 'active' : ''}`} data-position="0">0</div>
+        <div className="loading-bar-markers">
+          <div className={`marker ${progress >= 0 ? 'active' : ''}`} data-position="0">00</div>
           <div className={`marker ${progress >= 25 ? 'active' : ''}`} data-position="25">25</div>
           <div className={`marker ${progress >= 50 ? 'active' : ''}`} data-position="50">50</div>
           <div className={`marker ${progress >= 75 ? 'active' : ''}`} data-position="75">75</div>
           <div className={`marker ${progress >= 100 ? 'active' : ''}`} data-position="100">100</div>
         </div>
+        
+        {/* Progressive line fills */}
+        <div className="connector-lines">
+          <div 
+            className="connector-line"
+            id="line-0-25"
+            style={{ 
+              transform: `scaleX(${progress >= 0 ? Math.min(1, (progress - 0) / 25) : 0})` 
+            }}
+          />
+          <div 
+            className="connector-line"
+            id="line-25-50"
+            style={{ 
+              transform: `scaleX(${progress >= 25 ? Math.min(1, (progress - 25) / 25) : 0})` 
+            }}
+          />
+          <div 
+            className="connector-line"
+            id="line-50-75"
+            style={{ 
+              transform: `scaleX(${progress >= 50 ? Math.min(1, (progress - 50) / 25) : 0})` 
+            }}
+          />
+          <div 
+            className="connector-line"
+            id="line-75-100"
+            style={{ 
+              transform: `scaleX(${progress >= 75 ? Math.min(1, (progress - 75) / 25) : 0})` 
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Block elements that progressively fill */}
+      <div className="block-container">
+        <div 
+          className="block"
+          id="block-1"
+          style={{ 
+            transform: `scale(${progress >= 20 ? Math.min(1, (progress - 20) / 20) : 0})` 
+          }}
+        />
+        <div 
+          className="block"
+          id="block-2"
+          style={{ 
+            transform: `scale(${progress >= 40 ? Math.min(1, (progress - 40) / 20) : 0})` 
+          }}
+        />
+        <div 
+          className="block"
+          id="block-3"
+          style={{ 
+            transform: `scale(${progress >= 60 ? Math.min(1, (progress - 60) / 20) : 0})` 
+          }}
+        />
+        <div 
+          className="block"
+          id="block-4"
+          style={{ 
+            transform: `scale(${progress >= 80 ? Math.min(1, (progress - 80) / 20) : 0})` 
+          }}
+        />
       </div>
 
       <style jsx>{`
+        @import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
+
         .preloader {
           position: fixed;
           top: 0;
@@ -197,6 +266,7 @@ export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
           letter-spacing: -0.02em;
         }
 
+        /* Pixel Grid */
         .pixel-grid {
           position: absolute;
           top: 0;
@@ -211,169 +281,265 @@ export default function BrutalistPreloader({ onComplete }: PreloaderProps) {
           position: absolute;
           background-color: #f5f5f5;
           opacity: 0.1;
-          transition: width 0.2s ease, height 0.2s ease;
         }
 
         .pixel-row {
           height: 1px;
+          width: 0%;
           left: 0;
         }
 
         .pixel-column {
           width: 1px;
+          height: 0%;
           top: 0;
         }
 
-        .top-row {
+        #top-row {
           top: 20%;
         }
 
-        .bottom-row {
+        #bottom-row {
           bottom: 20%;
         }
 
-        .left-column {
+        #left-column {
           left: 20%;
         }
 
-        .right-column {
+        #right-column {
           right: 20%;
         }
 
+        /* Block elements that fill progressively */
+        .block-container {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+        }
+
+        .block {
+          position: absolute;
+          background-color: #1a1a1a;
+          border: 1px solid rgba(245, 245, 245, 0.1);
+          transform-origin: center;
+          transform: scale(0);
+          transition: transform 500ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        #block-1 {
+          top: 10%;
+          left: 10%;
+          width: 15vw;
+          height: 15vw;
+        }
+
+        #block-2 {
+          top: 10%;
+          right: 10%;
+          width: 20vw;
+          height: 20vw;
+        }
+
+        #block-3 {
+          bottom: 10%;
+          left: 10%;
+          width: 20vw;
+          height: 20vw;
+        }
+
+        #block-4 {
+          bottom: 10%;
+          right: 10%;
+          width: 15vw;
+          height: 15vw;
+        }
+
+        /* Counter */
         .counter-wrapper {
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          z-index: 10;
+          z-index: 5;
+          width: 100%;
+          text-align: center;
         }
 
         .counter {
           font-size: clamp(10rem, 20vw, 30rem);
-          font-weight: 900;
+          font-weight: 700;
           line-height: 0.8;
-          text-align: center;
           color: #f5f5f5;
-          text-shadow: 0 0 20px rgba(245, 245, 245, 0.5);
           position: relative;
-          z-index: 2;
+          display: inline-block;
         }
 
         .counter-outline {
-          position: absolute;
-          top: 0;
-          left: 0;
           font-size: clamp(10rem, 20vw, 30rem);
-          font-weight: 900;
+          font-weight: 700;
           line-height: 0.8;
-          text-align: center;
           color: transparent;
-          -webkit-text-stroke: 2px #e0e0e0;
-          text-stroke: 2px #e0e0e0;
-          opacity: 0.3;
-          z-index: 1;
+          -webkit-text-stroke: 1px rgba(245, 245, 245, 0.1);
+          position: absolute;
+          top: 5px;
+          left: 5px;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
         }
 
+        /* Loading Text */
         .text-container {
           position: absolute;
-          bottom: 15%;
-          left: 50%;
-          transform: translateX(-50%);
-          text-align: center;
+          top: 2rem;
+          left: 2rem;
           z-index: 10;
         }
 
         .loading-text {
-          font-size: 1.5rem;
+          font-size: 2rem;
           font-weight: 700;
           margin-bottom: 1rem;
-          letter-spacing: 0.2em;
-          color: #f5f5f5;
+          opacity: 0.9;
         }
 
         .system-messages {
-          min-height: 2rem;
+          font-size: 1rem;
+          font-weight: normal;
+          line-height: 1.5;
+          opacity: 0.6;
+          height: 1.5em;
+          overflow: hidden;
         }
 
         .message {
-          font-size: 1rem;
-          font-weight: 400;
-          letter-spacing: 0.1em;
-          color: #e0e0e0;
-          opacity: 0.8;
+          display: block;
         }
 
         .message.active {
-          opacity: 1;
-          color: #f5f5f5;
+          display: block;
         }
 
-        .bracket {
-          color: #888;
-          margin: 0 0.5rem;
-        }
-
-        .message-text {
-          min-width: 200px;
-          display: inline-block;
-          text-align: left;
-        }
-
-        .progress-container {
+        /* Loading Bar */
+        .loading-bar-container {
           position: absolute;
-          bottom: 5%;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 80%;
-          max-width: 600px;
+          bottom: 3rem;
+          left: 2rem;
+          right: 2rem;
           z-index: 10;
         }
 
-        .progress-track {
+        .loading-bar {
+          height: 3px;
           width: 100%;
-          height: 2px;
-          background-color: #333;
-          border-radius: 1px;
-          overflow: hidden;
-          margin-bottom: 1rem;
+          background-color: rgba(245, 245, 245, 0.1);
+          margin-bottom: 10px;
+          position: relative;
         }
 
-        .progress-bar {
+        .progress {
           height: 100%;
+          width: 0%;
           background-color: #f5f5f5;
-          transition: width 0.3s ease;
+          transition: width 500ms cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .progress-markers {
+        .loading-bar-markers {
           display: flex;
           justify-content: space-between;
-          font-size: 0.75rem;
-          color: #888;
+          width: 100%;
+          font-size: 0.8rem;
+          opacity: 0.6;
+          position: relative;
         }
 
         .marker {
-          transition: color 0.3s ease;
+          position: relative;
+          padding-top: 10px;
+          transition: opacity 0.3s ease;
         }
 
         .marker.active {
-          color: #f5f5f5;
+          opacity: 1;
         }
 
+        .marker::before {
+          content: "";
+          position: absolute;
+          top: -15px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 1px;
+          height: 5px;
+          background-color: #f5f5f5;
+        }
+
+        /* Connector lines between markers */
+        .connector-lines {
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
+
+        .connector-line {
+          position: absolute;
+          top: -12px;
+          height: 1px;
+          background-color: #f5f5f5;
+          transform-origin: left;
+          transform: scaleX(0);
+          transition: transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        #line-0-25 {
+          left: 0%;
+          width: 25%;
+        }
+
+        #line-25-50 {
+          left: 25%;
+          width: 25%;
+        }
+
+        #line-50-75 {
+          left: 50%;
+          width: 25%;
+        }
+
+        #line-75-100 {
+          left: 75%;
+          width: 25%;
+        }
+
+        /* Media queries for responsive design */
         @media (max-width: 768px) {
-          .counter {
-            font-size: clamp(6rem, 15vw, 20rem);
+          .text-container {
+            top: 1rem;
+            left: 1rem;
           }
-          
-          .counter-outline {
-            font-size: clamp(6rem, 15vw, 20rem);
+
+          .loading-bar-container {
+            bottom: 2rem;
+            left: 1rem;
+            right: 1rem;
           }
-          
+
           .loading-text {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
           }
-          
-          .progress-container {
-            width: 90%;
+
+          .system-messages {
+            font-size: 0.8rem;
+          }
+
+          #block-1,
+          #block-2,
+          #block-3,
+          #block-4 {
+            width: 25vw;
+            height: 25vw;
           }
         }
       `}</style>
