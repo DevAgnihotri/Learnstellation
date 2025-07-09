@@ -1,4 +1,5 @@
 import "./src/env.js";
+import path from "path";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -16,6 +17,9 @@ const config = {
     ignoreDuringBuilds: true,
   },
   webpack: (config, { isServer }) => {
+    // Add path alias for ~ to src
+    config.resolve.alias['~'] = path.resolve(process.cwd(), 'src');
+    
     // Fix for client-side issues
     if (!isServer) {
       config.resolve.fallback = {
