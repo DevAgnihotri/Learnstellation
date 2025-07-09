@@ -1,0 +1,5 @@
+# API routes - handle with functions
+/api/*  /.netlify/functions/__nextjs  200
+
+# Next.js routing
+/*    /index.html   200

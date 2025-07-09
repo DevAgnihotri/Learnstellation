@@ -17,10 +17,93 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`🗺️ Starting roadmap generation for topic: ${input.topic}`);
         console.log(`🎚️ Difficulty: ${input.difficulty}`);
         
-        // Try with different Gemini models
+        // Check if we're in demo mode (e.g., on Netlify without backend)
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        
+        if (isDemoMode) {
+          console.log(`🎭 Demo mode: Generating mock roadmap for: ${input.topic}`);
+          
+          // Return a comprehensive mock roadmap for demo purposes
+          const mockRoadmap = {
+            title: `${input.topic} Learning Roadmap`,
+            description: `A comprehensive ${input.difficulty}-level learning path for ${input.topic}. This is a demo version - connect your own AI service for personalized roadmaps.`,
+            difficulty: input.difficulty,
+            rootTopics: input.difficulty === "beginner" 
+              ? ["fundamentals"]
+              : input.difficulty === "intermediate" 
+                ? ["fundamentals", "practical-skills"]
+                : ["fundamentals", "practical-skills", "advanced-topics"],
+            topics: input.difficulty === "beginner" 
+              ? [
+                  {
+                    id: "fundamentals",
+                    title: `${input.topic} Fundamentals`,
+                    summary: `Learn the core concepts and basic principles of ${input.topic}`,
+                    level: 0,
+                    parentId: undefined,
+                    children: []
+                  }
+                ]
+              : input.difficulty === "intermediate"
+                ? [
+                    {
+                      id: "fundamentals",
+                      title: `${input.topic} Fundamentals`,
+                      summary: `Review and solidify core concepts of ${input.topic}`,
+                      level: 0,
+                      parentId: undefined,
+                      children: ["practical-skills"]
+                    },
+                    {
+                      id: "practical-skills",
+                      title: `Practical ${input.topic} Skills`,
+                      summary: `Apply your knowledge with hands-on projects and real-world scenarios`,
+                      level: 1,
+                      parentId: "fundamentals",
+                      children: []
+                    }
+                  ]
+                : [
+                    {
+                      id: "fundamentals",
+                      title: `${input.topic} Fundamentals`,
+                      summary: `Master the theoretical foundation of ${input.topic}`,
+                      level: 0,
+                      parentId: undefined,
+                      children: ["practical-skills"]
+                    },
+                    {
+                      id: "practical-skills",
+                      title: `Advanced ${input.topic} Applications`,
+                      summary: `Implement complex solutions and optimize performance`,
+                      level: 1,
+                      parentId: "fundamentals",
+                      children: ["advanced-topics"]
+                    },
+                    {
+                      id: "advanced-topics",
+                      title: `Expert-Level ${input.topic}`,
+                      summary: `Explore cutting-edge techniques and contribute to the field`,
+                      level: 2,
+                      parentId: "practical-skills",
+                      children: []
+                    }
+                  ]
+          };
+          
+          console.log(`✅ Mock roadmap generated successfully`);
+          console.log(`📚 Generated ${mockRoadmap.topics.length} topics`);
+          
+          return {
+            success: true,
+            data: mockRoadmap
+          };
+        }
+        
+        // Only try AI generation if not in demo mode
         let roadmap;
         try {
-          // Use the correct model reference
+          // Use the correct model reference with shorter timeout for Netlify
           const model = llms.gemini("gemini-1.5-flash");
           
           const roadmapPromise = generateRoadmap(
@@ -29,8 +112,9 @@ export const roadmapRouter = createTRPCRouter({
             model
           );
           
+          // Reduced timeout for Netlify Functions (30 seconds instead of 60)
           const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("Roadmap generation timed out after 60 seconds")), 60000)
+            setTimeout(() => reject(new Error("Roadmap generation timed out after 30 seconds")), 30000)
           );
           
           roadmap = await Promise.race([roadmapPromise, timeoutPromise]) as Awaited<typeof roadmapPromise>;
@@ -90,7 +174,7 @@ export const roadmapRouter = createTRPCRouter({
           success: true,
           data: {
             title: `${input.topic} Quick Start`,
-            description: `Basic learning outline for ${input.topic}`,
+            description: `Basic learning outline for ${input.topic}. This is a fallback response - please try again or contact support.`,
             difficulty: input.difficulty,
             rootTopics: ["start"],
             topics: [

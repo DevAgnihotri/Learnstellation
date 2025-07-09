@@ -13,6 +13,12 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+[functions]
+  # Configure Netlify Functions for tRPC API endpoints
+  # Increase timeout for AI/LLM operations that might take longer
+  timeout = 300
+  max_duration = 300
+
 [context.production.environment]
   SKIP_ENV_VALIDATION = "false"
   NEXT_PUBLIC_DEMO_MODE = "true"

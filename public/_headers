@@ -1,0 +1,13 @@
+/api/*
+  Cache-Control: no-store, no-cache, must-revalidate
+  Connection: close
+  Keep-Alive: timeout=5, max=1000
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+
+/api/trpc/*
+  Cache-Control: no-store, no-cache, must-revalidate
+  Connection: close
+  Keep-Alive: timeout=5, max=1000
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff

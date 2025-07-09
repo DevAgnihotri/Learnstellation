@@ -28,7 +28,27 @@ const handler = (req: NextRequest) =>
               `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`,
             );
           }
-        : undefined,
+        : ({ path, error }) => {
+            // Log errors in production too for debugging Netlify issues
+            console.error(
+              `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`,
+            );
+          },
+    // Add response headers to help with HTTP/2 issues on Netlify
+    responseMeta() {
+      return {
+        headers: {
+          "Cache-Control": "no-store",
+          "Connection": "close",
+          // Help prevent HTTP/2 issues
+          "Keep-Alive": "timeout=5, max=1000",
+        },
+      };
+    },
   });
 
 export { handler as GET, handler as POST };
+
+// Export runtime config for Netlify Functions
+export const runtime = 'nodejs';
+export const maxDuration = 300; // 5 minutes max for AI operations
