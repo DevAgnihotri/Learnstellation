@@ -5,17 +5,6 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
-  "functions": {
-    "src/python-backend/app.py": {
-      "runtime": "python3.9"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/python/(.*)",
-      "destination": "/api/python/$1"
-    }
-  ],
   "env": {
     "SKIP_ENV_VALIDATION": "true"
   }
