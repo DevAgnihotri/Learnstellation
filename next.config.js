@@ -15,11 +15,14 @@ const config = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  turbopack: {
-    resolveAlias: {
-      '~': './src',
+  // Only use turbopack in development
+  ...(process.env.DISABLE_TURBOPACK !== 'true' && {
+    turbopack: {
+      resolveAlias: {
+        '~': './src',
+      },
     },
-  },
+  }),
 };
 
 export default config;
