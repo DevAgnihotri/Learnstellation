@@ -178,7 +178,10 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
         if (!topicsByLevel.has(topic.level)) {
           topicsByLevel.set(topic.level, []);
         }
-        topicsByLevel.get(topic.level)!.push(topic);
+        const levelTopics = topicsByLevel.get(topic.level);
+        if (levelTopics) {
+          levelTopics.push(topic);
+        }
       });
 
       // Process each level in order
@@ -186,6 +189,8 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
       
       for (let level = 0; level <= maxLevel; level++) {
         const topicsAtLevel = topicsByLevel.get(level) ?? [];
+        
+        if (topicsAtLevel.length === 0) continue;
         
         topicsAtLevel.forEach((topic, topicIndex) => {
           let position: Position;
@@ -197,7 +202,7 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
             let radius = baseRadius;
             
             do {
-              const angle = (topicIndex / topicsAtLevel.length) * 2 * Math.PI;
+              const angle = topicsAtLevel.length > 0 ? (topicIndex / topicsAtLevel.length) * 2 * Math.PI : 0;
               position = {
                 x: centerX + radius * Math.cos(angle),
                 y: centerY + radius * Math.sin(angle)
@@ -262,7 +267,7 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
               let radius = levelRadii[Math.min(level + 1, levelRadii.length - 1)] ?? (350 + level * 150);
               
               do {
-                const angle = (topicIndex / topicsAtLevel.length) * 2 * Math.PI;
+                const angle = topicsAtLevel.length > 0 ? (topicIndex / topicsAtLevel.length) * 2 * Math.PI : 0;
                 position = {
                   x: centerX + radius * Math.cos(angle),
                   y: centerY + radius * Math.sin(angle)

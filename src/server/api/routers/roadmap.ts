@@ -75,7 +75,7 @@ export const roadmapRouter = createTRPCRouter({
         }
         
         console.log(`✅ Roadmap generated successfully`);
-        console.log(`📚 Generated ${roadmap.topics.length} topics`);
+        console.log(`📚 Generated ${roadmap.topics?.length ?? 0} topics`);
         
         return {
           success: true,

@@ -42,7 +42,7 @@ interface DatabaseResource {
   id: string;
   title: string;
   description: string | null;
-  url: string;
+  url: string | null;
   type: string;
   relevanceScore: number | null;
   relevanceReason: string | null;
@@ -345,11 +345,17 @@ export default function MapClient() {
           selectedVideos: resources.map((resource: DatabaseResource) => {
             // Extract video ID from YouTube URL
             let videoId = resource.id;
-            if (resource.url.includes('youtube.com/watch?v=')) {
-              const urlParams = new URLSearchParams(resource.url.split('?')[1]);
-              videoId = urlParams.get('v') ?? resource.id;
-            } else if (resource.url.includes('youtu.be/')) {
-              videoId = resource.url.split('youtu.be/')[1]?.split('?')[0] ?? resource.id;
+            if (resource.url && resource.url.includes('youtube.com/watch?v=')) {
+              const urlParts = resource.url.split('?');
+              if (urlParts.length > 1) {
+                const urlParams = new URLSearchParams(urlParts[1]);
+                videoId = urlParams.get('v') ?? resource.id;
+              }
+            } else if (resource.url && resource.url.includes('youtu.be/')) {
+              const urlParts = resource.url.split('youtu.be/');
+              if (urlParts.length > 1) {
+                videoId = urlParts[1]?.split('?')[0] ?? resource.id;
+              }
             }
             
             return {
