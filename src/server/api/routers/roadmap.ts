@@ -18,7 +18,10 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`🎚️ Difficulty: ${input.difficulty}`);
         
         // Check if we're in demo mode (e.g., on Netlify without backend)
-        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        // Multiple checks to ensure demo mode is detected properly
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true" || 
+                          process.env.NODE_ENV === "production" && !process.env.DATABASE_URL ||
+                          process.env.NETLIFY === "true";
         
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Generating mock roadmap for: ${input.topic}`);
@@ -259,7 +262,9 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`💾 Starting roadmap save for: ${input.roadmap.title}`);
         
         // Check if we're in demo mode (e.g., on Netlify without a proper database)
-        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true" || 
+                          process.env.NODE_ENV === "production" && !process.env.DATABASE_URL ||
+                          process.env.NETLIFY === "true";
         
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Simulating roadmap save for: ${input.roadmap.title}`);
@@ -346,7 +351,9 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`📚 Retrieving roadmaps for anonymous user`);
         
         // Check if we're in demo mode (e.g., on Netlify without a proper database)
-        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true" || 
+                          process.env.NODE_ENV === "production" && !process.env.DATABASE_URL ||
+                          process.env.NETLIFY === "true";
         
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Returning mock roadmaps`);
@@ -427,7 +434,9 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`🔍 Retrieving roadmap with ID: ${input.id}`);
         
         // Check if we're in demo mode first
-        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true" || 
+                          process.env.NODE_ENV === "production" && !process.env.DATABASE_URL ||
+                          process.env.NETLIFY === "true";
         
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Returning mock roadmap data for ID: ${input.id}`);
@@ -551,7 +560,7 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`🗑️ Deleting roadmap with ID: ${input.id}`);
         
         // Check if we're in demo mode first
-        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true" || process.env.NODE_ENV === "production" && !process.env.DATABASE_URL || process.env.NETLIFY === "true";
         
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Simulating roadmap deletion`);
@@ -636,7 +645,7 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`📺 Number of resources to save: ${input.resources.length}`);
         
         // Check if we're in demo mode first
-        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true" || process.env.NODE_ENV === "production" && !process.env.DATABASE_URL || process.env.NETLIFY === "true";
         
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Simulating YouTube resources save`);
@@ -726,7 +735,7 @@ export const roadmapRouter = createTRPCRouter({
         }
         
         // Check if we're in demo mode first
-        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true" || process.env.NODE_ENV === "production" && !process.env.DATABASE_URL || process.env.NETLIFY === "true";
         
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Returning empty resources list`);
@@ -775,7 +784,7 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`📊 Project count requested: ${input.projectCount}`);
         
         // Check if we're in demo mode first
-        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true" || process.env.NODE_ENV === "production" && !process.env.DATABASE_URL || process.env.NETLIFY === "true";
         
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Generating mock projects`);
@@ -884,7 +893,7 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`📝 Number of projects to save: ${input.projects.length}`);
         
         // Check if we're in demo mode first
-        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true" || process.env.NODE_ENV === "production" && !process.env.DATABASE_URL || process.env.NETLIFY === "true";
         
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Simulating projects save`);
@@ -1018,7 +1027,7 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`📋 Retrieving projects for roadmap: ${input.roadmapId}`);
         
         // Check if we're in demo mode first
-        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true" || process.env.NODE_ENV === "production" && !process.env.DATABASE_URL || process.env.NETLIFY === "true";
         
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Returning empty projects list`);
