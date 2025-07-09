@@ -15,9 +15,7 @@
 
 [functions]
   # Configure Netlify Functions for tRPC API endpoints
-  # Increase timeout for AI/LLM operations that might take longer
-  timeout = 300
-  max_duration = 300
+  node_bundler = "esbuild"
 
 [context.production.environment]
   SKIP_ENV_VALIDATION = "false"
@@ -32,5 +30,3 @@
   SKIP_ENV_VALIDATION = "true"
   NEXT_PUBLIC_BACKEND_URL = "https://learnstellation.onrender.com"  
   NEXT_PUBLIC_DEMO_MODE = "true"
-
-# Handle Next.js routing - removed incorrect redirect
