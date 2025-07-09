@@ -342,6 +342,57 @@ export const roadmapRouter = createTRPCRouter({
       try {
         console.log(`🔍 Retrieving roadmap with ID: ${input.id}`);
         
+        // Check if we're in demo mode first
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        
+        if (isDemoMode) {
+          console.log(`🎭 Demo mode: Returning mock roadmap data for ID: ${input.id}`);
+          
+          // Return a mock roadmap that matches the expected structure
+          const mockRoadmap = {
+            title: "Demo Learning Roadmap",
+            description: "This is a demonstration roadmap showing how the learning path would be structured.",
+            difficulty: "beginner" as const,
+            rootTopics: ["foundations", "intermediate", "advanced"],
+            topics: [
+              {
+                id: "foundations",
+                title: "Foundation Concepts",
+                summary: "Learn the fundamental concepts and get started with the basics",
+                level: 0,
+                parentId: null,
+                children: ["intermediate"]
+              },
+              {
+                id: "intermediate", 
+                title: "Intermediate Skills",
+                summary: "Build upon the foundations with more complex topics",
+                level: 1,
+                parentId: "foundations",
+                children: ["advanced"]
+              },
+              {
+                id: "advanced",
+                title: "Advanced Techniques",
+                summary: "Master advanced concepts and best practices",
+                level: 2,
+                parentId: "intermediate",
+                children: []
+              }
+            ]
+          };
+          
+          return {
+            success: true,
+            data: {
+              id: input.id,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              roadmap: mockRoadmap
+            }
+          };
+        }
+        
         if (!db) {
           throw new Error("Database connection not available");
         }
@@ -414,6 +465,17 @@ export const roadmapRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
         console.log(`🗑️ Deleting roadmap with ID: ${input.id}`);
+        
+        // Check if we're in demo mode first
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        
+        if (isDemoMode) {
+          console.log(`🎭 Demo mode: Simulating roadmap deletion`);
+          return {
+            success: true,
+            message: "Roadmap deleted successfully (demo mode)"
+          };
+        }
         
         if (!db) {
           throw new Error("Database connection not available");
@@ -488,6 +550,20 @@ export const roadmapRouter = createTRPCRouter({
       try {
         console.log(`💾 Saving YouTube resources for topic: ${input.topicId}`);
         console.log(`📺 Number of resources to save: ${input.resources.length}`);
+        
+        // Check if we're in demo mode first
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        
+        if (isDemoMode) {
+          console.log(`🎭 Demo mode: Simulating YouTube resources save`);
+          return {
+            success: true,
+            data: {
+              savedCount: input.resources.length,
+              topicId: input.topicId
+            }
+          };
+        }
         
         if (!db) {
           throw new Error("Database connection not available");
@@ -565,6 +641,17 @@ export const roadmapRouter = createTRPCRouter({
           console.log(`🔍 Filtering by type: ${input.type}`);
         }
         
+        // Check if we're in demo mode first
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        
+        if (isDemoMode) {
+          console.log(`🎭 Demo mode: Returning empty resources list`);
+          return {
+            success: true,
+            data: []
+          };
+        }
+        
         if (!db) {
           throw new Error("Database connection not available");
         }
@@ -602,6 +689,30 @@ export const roadmapRouter = createTRPCRouter({
       try {
         console.log(`🚀 Generating projects for roadmap: ${input.roadmapId}`);
         console.log(`📊 Project count requested: ${input.projectCount}`);
+        
+        // Check if we're in demo mode first
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        
+        if (isDemoMode) {
+          console.log(`🎭 Demo mode: Generating mock projects`);
+          
+          // Return mock projects for demo
+          const mockProjects = Array.from({ length: input.projectCount }, (_, i) => ({
+            id: `demo-project-${i + 1}`,
+            title: `Demo Project ${i + 1}`,
+            description: `This is a sample project for demonstration purposes. Project ${i + 1} would help you apply your learning in a practical way.`,
+            difficulty: "BEGINNER" as const,
+            estimatedTime: "2-4 weeks",
+            technologies: ["JavaScript", "HTML", "CSS"],
+            relatedTopicIds: [],
+            deliverables: ["Working application", "Source code", "Documentation"]
+          }));
+          
+          return {
+            success: true,
+            data: mockProjects
+          };
+        }
         
         if (!db) {
           throw new Error("Database connection not available");
@@ -687,6 +798,30 @@ export const roadmapRouter = createTRPCRouter({
       try {
         console.log(`💾 Saving projects for roadmap: ${input.roadmapId}`);
         console.log(`📝 Number of projects to save: ${input.projects.length}`);
+        
+        // Check if we're in demo mode first
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        
+        if (isDemoMode) {
+          console.log(`🎭 Demo mode: Simulating projects save`);
+          return {
+            success: true,
+            data: {
+              savedCount: input.projects.length,
+              roadmapId: input.roadmapId,
+              projects: input.projects.map(p => ({
+                id: p.id,
+                title: p.title,
+                description: p.description,
+                difficulty: p.difficulty,
+                estimatedTime: p.estimatedTime,
+                technologies: p.technologies,
+                deliverables: p.deliverables,
+                relatedTopics: []
+              }))
+            }
+          };
+        }
         
         if (!db) {
           throw new Error("Database connection not available");
@@ -797,6 +932,21 @@ export const roadmapRouter = createTRPCRouter({
     .query(async ({ input }) => {
       try {
         console.log(`📋 Retrieving projects for roadmap: ${input.roadmapId}`);
+        
+        // Check if we're in demo mode first
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        
+        if (isDemoMode) {
+          console.log(`🎭 Demo mode: Returning empty projects list`);
+          return {
+            success: true,
+            data: {
+              roadmapId: input.roadmapId,
+              projects: [],
+              totalCount: 0
+            }
+          };
+        }
         
         if (!db) {
           throw new Error("Database connection not available");

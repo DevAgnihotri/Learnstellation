@@ -8,8 +8,7 @@
   NEXT_PUBLIC_DEMO_MODE = "true"
   CSS_MINIMIZE = "true"
   DISABLE_TURBOPACK = "true"
-  # Use a demo database URL for Netlify (you'll need to replace this with a real database)
-  DATABASE_URL = "file:./dev.db"
+  # No DATABASE_URL in demo mode - database operations will be mocked
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
