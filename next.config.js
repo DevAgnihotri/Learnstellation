@@ -1,5 +1,4 @@
 import "./src/env.js";
-import path from "path";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -16,19 +15,10 @@ const config = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  webpack: (config, { isServer }) => {
-    // Add path alias for ~ to src
-    config.resolve.alias['~'] = path.resolve(process.cwd(), 'src');
-    
-    // Fix for client-side issues
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-      };
-    }
-    
-    return config;
+  turbopack: {
+    resolveAlias: {
+      '~': './src',
+    },
   },
 };
 

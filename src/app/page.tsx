@@ -14,7 +14,8 @@ import {
   Sparkles,
   Rocket,
   Telescope,
-  PlayCircle
+  PlayCircle,
+  Loader2
 } from "lucide-react";
 import ThemeToggle from "~/components/ThemeToggle";
 
@@ -27,9 +28,18 @@ import DraggableWindow from "~/components/DraggableWindow";
 export default function Home() {
   const [user] = useState<{ email?: string } | null>(null);
   const [showPreloader, setShowPreloader] = useState(true);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const handlePreloaderComplete = () => {
     setShowPreloader(false);
+  };
+
+  const handleNavigation = (href: string) => {
+    setIsNavigating(true);
+    // Small delay to show the loading state before navigation
+    setTimeout(() => {
+      window.location.href = href;
+    }, 200);
   };
 
   if (showPreloader) {
@@ -146,24 +156,30 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
                 <Button 
                   size="default" 
-                  asChild 
                   className="bg-gradient-to-r from-blue-500 via-purple-600 to-blue-700 hover:from-blue-600 hover:via-purple-700 hover:to-blue-800 text-white px-8 py-6 shadow-lg transform hover:scale-105 transition-all duration-300"
+                  onClick={() => handleNavigation("/signup")}
+                  disabled={isNavigating}
                 >
-                  <Link href="/signup">
+                  {isNavigating ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
                     <Rocket className="w-4 h-4 mr-2" />
-                    Launch Your Journey
-                  </Link>
+                  )}
+                  {isNavigating ? "Launching..." : "Launch Your Journey"}
                 </Button>
                 <Button 
                   variant="outline" 
                   size="default" 
-                  asChild 
                   className="border-2 border-purple-400 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-950/20 px-8 py-6 transform hover:scale-105 transition-all duration-300"
+                  onClick={() => handleNavigation("#constellation-stats")}
+                  disabled={isNavigating}
                 >
-                  <Link href="#constellation-stats">
+                  {isNavigating ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
                     <Telescope className="w-4 h-4 mr-2" />
-                    Explore Universe
-                  </Link>
+                  )}
+                  {isNavigating ? "Exploring..." : "Explore Universe"}
                 </Button>
               </div>
             </motion.div>
@@ -265,11 +281,18 @@ export default function Home() {
               <p className="text-xs text-muted-foreground">&ldquo;Focus on useState optimization for 2x faster learning&rdquo;</p>
             </div>
           </div>
-          <Button size="sm" className="w-full bg-gradient-to-r from-purple-500 to-blue-500" asChild>
-            <Link href="/dashboard">
+          <Button 
+            size="sm" 
+            className="w-full bg-gradient-to-r from-purple-500 to-blue-500" 
+            onClick={() => handleNavigation("/dashboard")}
+            disabled={isNavigating}
+          >
+            {isNavigating ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
               <PlayCircle className="w-4 h-4 mr-2" />
-              Continue Learning
-            </Link>
+            )}
+            {isNavigating ? "Loading..." : "Continue Learning"}
           </Button>
         </div>
       </DraggableWindow>

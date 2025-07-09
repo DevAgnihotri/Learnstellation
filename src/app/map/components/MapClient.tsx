@@ -28,7 +28,7 @@ interface YouTubeVideo {
   thumbnailUrl: string;
   relevanceScore: number;
   relevanceReason: string;
-  url: string;
+  url: string | null;
 }
 
 interface YouTubeResources {
@@ -345,13 +345,13 @@ export default function MapClient() {
           selectedVideos: resources.map((resource: DatabaseResource) => {
             // Extract video ID from YouTube URL
             let videoId = resource.id;
-            if (resource.url && resource.url.includes('youtube.com/watch?v=')) {
+            if (resource.url?.includes('youtube.com/watch?v=')) {
               const urlParts = resource.url.split('?');
               if (urlParts.length > 1) {
                 const urlParams = new URLSearchParams(urlParts[1]);
                 videoId = urlParams.get('v') ?? resource.id;
               }
-            } else if (resource.url && resource.url.includes('youtu.be/')) {
+            } else if (resource.url?.includes('youtu.be/')) {
               const urlParts = resource.url.split('youtu.be/');
               if (urlParts.length > 1) {
                 videoId = urlParts[1]?.split('?')[0] ?? resource.id;
@@ -755,13 +755,43 @@ export default function MapClient() {
                                           });
 
                                           if (response.ok) {
-                                            // @ts-ignore - Temporarily disable TS for debugging
-                                            const result = await response.json();
+                                            // Define proper types for API response
+                                            interface ApiResponse {
+                                              result?: {
+                                                data?: {
+                                                  json?: {
+                                                    data?: {
+                                                      topics?: Array<{
+                                                        topic_name?: string;
+                                                        topic_summary?: string;
+                                                      }>;
+                                                    };
+                                                  };
+                                                  success?: boolean;
+                                                  data?: {
+                                                    topics?: Array<{
+                                                      topic_name?: string;
+                                                      topic_summary?: string;
+                                                    }>;
+                                                  };
+                                                  topics?: Array<{
+                                                    topic_name?: string;
+                                                    topic_summary?: string;
+                                                  }>;
+                                                };
+                                                topics?: Array<{
+                                                  topic_name?: string;
+                                                  topic_summary?: string;
+                                                }>;
+                                              };
+                                            }
+                                            
+                                            const result = await response.json() as ApiResponse;
                                             
                                             console.log("🔍 Raw API response:", JSON.stringify(result, null, 2));
                                             
-                                            // Handle different response structures
-                                            let topics = null;
+                                            // Handle different response structures with proper type safety
+                                            let topics: Array<{ topic_name?: string; topic_summary?: string; }> | null = null;
                                             try {
                                               if (result.result?.data?.json?.data?.topics) {
                                                 topics = result.result.data.json.data.topics;
@@ -777,14 +807,14 @@ export default function MapClient() {
                                                 console.log("✅ Found topics in structure: result.result.topics");
                                               } else {
                                                 console.log("❌ Could not find topics in any expected structure");
-                                                console.log("Available keys in result:", Object.keys(result));
-                                                if (result.result) {
+                                                console.log("Available keys in result:", result ? Object.keys(result) : 'result is null');
+                                                if (result?.result) {
                                                   console.log("Available keys in result.result:", Object.keys(result.result));
-                                                  if (result.result.data) {
+                                                  if (result.result.data && typeof result.result.data === 'object') {
                                                     console.log("Available keys in result.result.data:", Object.keys(result.result.data));
-                                                    if (result.result.data.json) {
+                                                    if (result.result.data.json && typeof result.result.data.json === 'object') {
                                                       console.log("Available keys in result.result.data.json:", Object.keys(result.result.data.json));
-                                                      if (result.result.data.json.data) {
+                                                      if (result.result.data.json.data && typeof result.result.data.json.data === 'object') {
                                                         console.log("Available keys in result.result.data.json.data:", Object.keys(result.result.data.json.data));
                                                       }
                                                     }
