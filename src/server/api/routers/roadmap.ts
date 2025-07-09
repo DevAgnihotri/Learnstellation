@@ -174,7 +174,27 @@ export const roadmapRouter = createTRPCRouter({
       try {
         console.log(`💾 Starting roadmap save for: ${input.roadmap.title}`);
         
-        // Create the roadmap record
+        // Check if we're in demo mode (e.g., on Netlify without a proper database)
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        
+        if (isDemoMode) {
+          console.log(`🎭 Demo mode: Simulating roadmap save for: ${input.roadmap.title}`);
+          
+          // Return a mock successful response for demo purposes
+          return {
+            id: `demo-${Date.now()}`,
+            title: input.roadmap.title,
+            description: input.roadmap.description,
+            difficulty: input.roadmap.difficulty,
+            topics: input.roadmap.topics,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            profileId: null,
+            profile: null
+          };
+        }
+        
+        // Create the roadmap record (only when database is available)
         const savedRoadmap = await db.roadmap.create({
           data: {
             title: input.roadmap.title,
@@ -233,6 +253,19 @@ export const roadmapRouter = createTRPCRouter({
     .query(async () => {
       try {
         console.log(`📚 Retrieving roadmaps for anonymous user`);
+        
+        // Check if we're in demo mode (e.g., on Netlify without a proper database)
+        const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+        
+        if (isDemoMode) {
+          console.log(`🎭 Demo mode: Returning mock roadmaps`);
+          
+          // Return mock data for demo purposes
+          return {
+            success: true,
+            data: []
+          };
+        }
         
         const roadmaps = await db.roadmap.findMany({
           where: {

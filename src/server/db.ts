@@ -2,11 +2,18 @@ import { PrismaClient } from "@prisma/client";
 
 import { env } from "~/env";
 
-const createPrismaClient = () =>
-  new PrismaClient({
-    log:
-      env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-  });
+const createPrismaClient = () => {
+  try {
+    return new PrismaClient({
+      log:
+        env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+    });
+  } catch (error) {
+    console.warn("⚠️ Failed to create Prisma client:", error);
+    // Return a mock client for demo mode
+    return null;
+  }
+};
 
 const globalForPrisma = globalThis as unknown as {
   prisma: ReturnType<typeof createPrismaClient> | undefined;
