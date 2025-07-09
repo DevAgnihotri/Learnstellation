@@ -408,7 +408,7 @@ export default function MapClient() {
   };
 
   const getTopicsByLevel = (level: number): Topic[] => {
-    if (!roadmap) return [];
+    if (!roadmap?.topics) return [];
     return roadmap.topics.filter(topic => topic.level === level);
   };
 
@@ -624,14 +624,12 @@ export default function MapClient() {
                       <Badge variant="secondary">Level {selectedTopic.level}</Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">{selectedTopic.summary}</p>
-                  </div>
-                  
-                  {selectedTopic.children.length > 0 && (
+                  </div>                        {selectedTopic.children?.length > 0 && (
                     <div>
                       <Label className="text-sm font-medium">Related Topics:</Label>
                       <div className="flex flex-wrap gap-1 mt-2">
-                        {selectedTopic.children.map((childId) => {
-                          const childTopic = roadmap.topics.find(t => t.id === childId);
+                        {(selectedTopic.children ?? []).map((childId) => {
+                          const childTopic = roadmap?.topics?.find(t => t.id === childId);
                           return childTopic ? (
                             <Badge 
                               key={childId} 

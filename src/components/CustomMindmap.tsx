@@ -137,7 +137,7 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
     const calculateNodeSize = (title: string, level: number, isRoot = false): { width: number; height: number } => {
       const baseWidth = isRoot ? 160 : level === 0 ? 140 : level === 1 ? 120 : level === 2 ? 100 : 90;
       const baseHeight = isRoot ? 60 : level === 0 ? 50 : level === 1 ? 45 : level === 2 ? 40 : 35;
-      const titleLength = title.length;
+      const titleLength = (title ?? '').length;
       const minWidth = baseWidth;
       const textWidth = Math.max(minWidth, titleLength * 8 + 20);
       return {
@@ -161,7 +161,7 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
       summary: roadmap.description,
       level: -1,
       parentId: undefined,
-      children: roadmap.rootTopics,
+      children: roadmap.rootTopics ?? [],
       position: { x: centerX, y: centerY },
       depth: 0
     };
@@ -174,7 +174,7 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
     const processTopicsByLevel = () => {
       // Group topics by their level
       const topicsByLevel = new Map<number, Topic[]>();
-      roadmap.topics.forEach(topic => {
+      roadmap.topics?.forEach(topic => {
         if (!topicsByLevel.has(topic.level)) {
           topicsByLevel.set(topic.level, []);
         }
@@ -182,7 +182,7 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
       });
 
       // Process each level in order
-      const maxLevel = Math.max(...roadmap.topics.map(t => t.level));
+      const maxLevel = Math.max(...(roadmap.topics?.map(t => t.level) ?? [0]));
       
       for (let level = 0; level <= maxLevel; level++) {
         const topicsAtLevel = topicsByLevel.get(level) ?? [];
@@ -324,7 +324,7 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
     const baseHeight = isRoot ? 60 : level === 0 ? 50 : level === 1 ? 45 : level === 2 ? 40 : 35;
     
     // Adjust width based on text length
-    const titleLength = node.title.length;
+    const titleLength = (node.title ?? '').length;
     const minWidth = baseWidth;
     const textWidth = Math.max(minWidth, titleLength * 8 + 20); // Approximate character width
     
@@ -338,7 +338,7 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
     const connections: ReactElement[] = [];
     
     // Add connections from root to root topics
-    roadmap.rootTopics.forEach(rootTopicId => {
+    roadmap.rootTopics?.forEach(rootTopicId => {
       const rootTopicNode = nodes.find(n => n.id === rootTopicId);
       const rootNode = nodes.find(n => n.id === 'root');
       if (rootTopicNode && rootNode) {
@@ -380,7 +380,7 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
     });
     
     // Add connections based on parent-child relationships
-    roadmap.topics.forEach(topic => {
+    roadmap.topics?.forEach(topic => {
       if (topic.parentId) {
         const parentNode = nodes.find(n => n.id === topic.parentId);
         const childNode = nodes.find(n => n.id === topic.id);
@@ -680,9 +680,9 @@ export default function CustomMindmap({ roadmap, onTopicSelect, selectedTopic }:
               {toolMode === 'select' ? 'Click nodes to see details • Use hand tool to drag canvas' : 'Drag to pan the canvas • Switch to select tool to click nodes'} • Scroll to zoom
             </div>
             <div className="text-xs text-gray-400">
-              Foundation: {roadmap.topics.filter(t => t.level === 0).length} • 
-              Core: {roadmap.topics.filter(t => t.level === 1).length} • 
-              Advanced: {roadmap.topics.filter(t => t.level >= 2).length} topics
+              Foundation: {roadmap.topics?.filter(t => t.level === 0).length ?? 0} • 
+              Core: {roadmap.topics?.filter(t => t.level === 1).length ?? 0} • 
+              Advanced: {roadmap.topics?.filter(t => t.level >= 2).length ?? 0} topics
             </div>
           </div>
         </Card>
