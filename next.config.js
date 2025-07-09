@@ -1,4 +1,5 @@
-import "./src/env.js";
+// Temporarily simplified config for debugging build issues
+// import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -15,14 +16,6 @@ const config = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  // Only use turbopack in development
-  ...(process.env.DISABLE_TURBOPACK !== 'true' && {
-    turbopack: {
-      resolveAlias: {
-        '~': './src',
-      },
-    },
-  }),
 };
 
 export default config;
