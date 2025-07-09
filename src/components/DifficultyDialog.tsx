@@ -46,10 +46,10 @@ export default function DifficultyDialog({ isOpen, onClose, courseTitle }: Diffi
           roadmap: data.data
         });
         
-        console.log("💾 Roadmap saved successfully:", saveResult.data);
+        console.log("💾 Roadmap saved successfully:", saveResult);
         
         // Navigate to map page with the saved roadmap ID
-        router.push(`/map?roadmapId=${saveResult.data.id}`);
+        router.push(`/map?roadmapId=${saveResult.id}`);
         
         // Close dialog and reset state
         setTimeout(() => {

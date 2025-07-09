@@ -180,9 +180,12 @@ export const roadmapRouter = createTRPCRouter({
         if (isDemoMode) {
           console.log(`🎭 Demo mode: Simulating roadmap save for: ${input.roadmap.title}`);
           
-          // Return a mock successful response for demo purposes
+          // Return a mock successful response for demo purposes  
+          const mockId = `demo-${Date.now()}`;
+          console.log(`💾 Roadmap saved successfully: ${mockId}`);
+          
           return {
-            id: `demo-${Date.now()}`,
+            id: mockId,
             title: input.roadmap.title,
             description: input.roadmap.description,
             difficulty: input.roadmap.difficulty,
@@ -195,6 +198,10 @@ export const roadmapRouter = createTRPCRouter({
         }
         
         // Create the roadmap record (only when database is available)
+        if (!db) {
+          throw new Error("Database connection not available");
+        }
+        
         const savedRoadmap = await db.roadmap.create({
           data: {
             title: input.roadmap.title,
@@ -221,15 +228,15 @@ export const roadmapRouter = createTRPCRouter({
         console.log(`📚 Saved ${savedRoadmap.topics.length} topics`);
         
         return {
-          success: true,
-          data: {
-            id: savedRoadmap.id,
-            title: savedRoadmap.title,
-            description: savedRoadmap.description,
-            difficulty: savedRoadmap.difficulty,
-            createdAt: savedRoadmap.createdAt,
-            topicCount: savedRoadmap.topics.length
-          }
+          id: savedRoadmap.id,
+          title: savedRoadmap.title,
+          description: savedRoadmap.description,
+          difficulty: savedRoadmap.difficulty,
+          topics: savedRoadmap.topics,
+          createdAt: savedRoadmap.createdAt,
+          updatedAt: savedRoadmap.updatedAt,
+          profileId: savedRoadmap.profileId,
+          profile: savedRoadmap.profile
         };
         
       } catch (error) {
@@ -265,6 +272,10 @@ export const roadmapRouter = createTRPCRouter({
             success: true,
             data: []
           };
+        }
+        
+        if (!db) {
+          throw new Error("Database connection not available");
         }
         
         const roadmaps = await db.roadmap.findMany({
@@ -330,6 +341,10 @@ export const roadmapRouter = createTRPCRouter({
     .query(async ({ input }) => {
       try {
         console.log(`🔍 Retrieving roadmap with ID: ${input.id}`);
+        
+        if (!db) {
+          throw new Error("Database connection not available");
+        }
         
         const roadmap = await db.roadmap.findUnique({
           where: {
@@ -400,6 +415,10 @@ export const roadmapRouter = createTRPCRouter({
       try {
         console.log(`🗑️ Deleting roadmap with ID: ${input.id}`);
         
+        if (!db) {
+          throw new Error("Database connection not available");
+        }
+        
         // First check if the roadmap exists and belongs to the user (if profileId provided)
         const existingRoadmap = await db.roadmap.findUnique({
           where: {
@@ -469,6 +488,10 @@ export const roadmapRouter = createTRPCRouter({
       try {
         console.log(`💾 Saving YouTube resources for topic: ${input.topicId}`);
         console.log(`📺 Number of resources to save: ${input.resources.length}`);
+        
+        if (!db) {
+          throw new Error("Database connection not available");
+        }
         
         // First, verify the topic exists
         const topic = await db.topic.findUnique({
@@ -542,6 +565,10 @@ export const roadmapRouter = createTRPCRouter({
           console.log(`🔍 Filtering by type: ${input.type}`);
         }
         
+        if (!db) {
+          throw new Error("Database connection not available");
+        }
+        
         const resources = await db.resource.findMany({
           where: {
             topicId: input.topicId,
@@ -575,6 +602,10 @@ export const roadmapRouter = createTRPCRouter({
       try {
         console.log(`🚀 Generating projects for roadmap: ${input.roadmapId}`);
         console.log(`📊 Project count requested: ${input.projectCount}`);
+        
+        if (!db) {
+          throw new Error("Database connection not available");
+        }
         
         // First, get the roadmap with its topics
         const roadmap = await db.roadmap.findUnique({
@@ -656,6 +687,10 @@ export const roadmapRouter = createTRPCRouter({
       try {
         console.log(`💾 Saving projects for roadmap: ${input.roadmapId}`);
         console.log(`📝 Number of projects to save: ${input.projects.length}`);
+        
+        if (!db) {
+          throw new Error("Database connection not available");
+        }
         
         // First, verify the roadmap exists
         const roadmap = await db.roadmap.findUnique({
@@ -762,6 +797,10 @@ export const roadmapRouter = createTRPCRouter({
     .query(async ({ input }) => {
       try {
         console.log(`📋 Retrieving projects for roadmap: ${input.roadmapId}`);
+        
+        if (!db) {
+          throw new Error("Database connection not available");
+        }
         
         const projects = await db.project.findMany({
           where: { roadmapId: input.roadmapId },
