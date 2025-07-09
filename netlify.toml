@@ -13,10 +13,6 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[functions]
-  # Configure Netlify Functions for tRPC API endpoints
-  node_bundler = "esbuild"
-
 [context.production.environment]
   SKIP_ENV_VALIDATION = "false"
   NEXT_PUBLIC_DEMO_MODE = "true"
